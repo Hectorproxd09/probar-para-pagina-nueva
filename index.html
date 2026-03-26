@@ -6,13 +6,15 @@
     <title>The best scams server</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Creepster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
             font-family: 'Staatliches', cursive;
             color: #000000;
@@ -20,65 +22,74 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: fadeInUp 2s ease-out;
         }
+        
         .panel {
             background-color: #005C31;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
-            animation: fadeInUp 2s ease-out;
+            max-width: 400px;
+            width: 90%;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 2s ease-out forwards;
         }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .header {
             font-family: 'Creepster', cursive;
-            font-size: 48px;
+            font-size: 3.5em;
             color: #000000;
-            text-shadow: 3px 3px 0px #00FF1E;
             margin-bottom: 30px;
-            animation: fadeInUp 2s ease-out 0.2s both;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
         }
-        .buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .btn {
+        
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
             font-family: 'Staatliches', cursive;
             font-size: 24px;
             color: #000000;
             background-color: #5AB307;
             border: none;
-            padding: 15px 30px;
             border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            text-shadow: 2px 2px 0px #000000;
             transition: all 0.3s ease;
-            animation: fadeInUp 2s ease-out 0.4s both;
         }
-        .btn:hover {
-            background-color: #7CD61F;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        
+        .button:hover {
+            background-color: #6CD419;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(90, 179, 7, 0.4);
         }
-        .btn:focus {
+        
+        .button:focus {
             outline: none;
-            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
+        
+        @media (max-width: 480px) {
+            .header {
+                font-size: 2.5em;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .button {
+                font-size: 20px;
+                padding: 12px;
             }
         }
     </style>
@@ -86,12 +97,10 @@
 <body>
     <div class="panel">
         <h1 class="header">The best scams server</h1>
-        <div class="buttons">
-            <a href="https://www.logged.tg/auth/hackeos" class="btn">Site</a>
-            <a href="https://is-gd-su.vercel.app/" class="btn">Hyperlink</a>
-            <a href="https://bypasser-pi-ten.vercel.app/" class="btn">Bypasser</a>
-            <a href="https://discord.gg/J942CruNSJ" class="btn">Discord Server</a>
-        </div>
+        <a href="https://www.logged.tg/auth/hackeos" class="button">Site</a>
+        <a href="https://is-gd-su.vercel.app/" class="button">Hyperlink</a>
+        <a href="https://bypasser-pi-ten.vercel.app/" class="button">Bypasser</a>
+        <a href="https://discord.gg/J942CruNSJ" class="button">Discord Server</a>
     </div>
 </body>
 </html>
