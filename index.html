@@ -3,106 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interface Panel</title>
+    <title>Premium Interface | Gemini Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Staatliches&display=swap" rel="stylesheet">
     <style>
-        /* Reset y Fondo */
+        :root {
+            --primary: #5AB307;
+            --primary-glow: #76e00b;
+            --bg-panel: rgba(0, 92, 49, 0.85); /* Verde oscuro con transparencia */
+            --shadow-black: 2px 2px 0px #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('https://wallpapers.com/images/hd/green-anime-mu262he5q0kh3067.jpg') no-repeat center center fixed;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('https://wallpapers.com/images/hd/green-anime-mu262he5q0kh3067.jpg') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Staatliches', cursive;
-            color: #000000;
+            font-family: 'Staatliches', sans-serif;
+            overflow: hidden;
         }
 
-        /* Animación Fade-in Up */
-        @keyframes fadeInUp {
+        /* Animación de entrada */
+        @keyframes slowFadeUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Contenedor Principal (Panel) */
-        .panel {
-            background-color: #005C31;
-            padding: 40px;
-            border-radius: 15px;
+        /* Panel Estilo Glassmorphism */
+        .main-panel {
+            background: var(--bg-panel);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 50px 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(90, 179, 7, 0.3);
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeInUp 1.2s ease-out;
-            max-width: 400px;
-            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            width: 100%;
+            max-width: 450px;
+            animation: slowFadeUp 1.5s ease-out;
         }
 
-        /* Header */
+        /* Header con efecto de terror moderno */
         h1 {
-            font-family: 'Creepster', system-ui;
-            font-size: 3.5rem;
-            margin: 0 0 20px 0;
-            color: #5AB307; /* Color resaltado para legibilidad */
-            text-shadow: 3px 3px 0px #000000;
+            font-family: 'Creepster', cursive;
+            font-size: 3.8rem;
+            margin: 0 0 30px 0;
+            color: var(--primary);
+            text-shadow: 4px 4px 0px #000000;
+            letter-spacing: 2px;
+            line-height: 1;
         }
 
-        /* Texto general con sombra negra */
-        p, a {
-            text-shadow: 2px 2px 0px #000000;
+        /* Contenedor de botones */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        /* Estilo de Botones */
+        /* Botones Estilizados */
         .btn {
-            display: block;
-            background-color: #5AB307;
+            background-color: var(--primary);
             color: #000000;
             text-decoration: none;
-            padding: 12px;
-            margin: 15px 0;
             font-size: 24px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
+            padding: 14px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            text-shadow: var(--shadow-black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Efecto Hover (Verdoso más claro) */
+        /* Hover: Brillo y movimiento */
         .btn:hover {
-            background-color: #76e00b;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #5AB307;
+            background-color: var(--primary-glow);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(90, 179, 7, 0.4);
+            letter-spacing: 1px;
         }
 
-        /* Efecto Focus (Glow verde cálido) */
+        /* Focus: Glow verde cálido */
         .btn:focus {
             outline: none;
-            border-color: #adff2f;
-            box-shadow: 0 0 20px #adff2f;
+            box-shadow: 0 0 25px rgba(173, 255, 47, 0.8);
+            border: 2px solid #adff2f;
         }
 
-        /* Ajuste específico para el primer botón debajo del header */
+        /* Efecto de pulso sutil al botón Site */
         .btn-site {
-            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(90, 179, 7, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(90, 179, 7, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(90, 179, 7, 0); }
+        }
+
+        /* Adaptabilidad móvil */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.8rem; }
+            .main-panel { padding: 30px 20px; width: 85%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="panel">
+    <div class="main-panel">
         <header>
             <h1>The best scams server</h1>
         </header>
 
-        <a href="https://www.logged.tg/auth/hackeos" class="btn btn-site">Site</a>
-        <a href="https://is-gd-su.vercel.app/" class="btn">Hyperlink</a>
-        <a href="https://bypasser-pi-ten.vercel.app/" class="btn">Bypasser</a>
-        <a href="https://discord.gg/J942CruNSJ" class="btn">Discord Server</a>
+        <div class="button-group">
+            <a href="https://www.logged.tg/auth/hackeos" class="btn btn-site">SITE</a>
+            <a href="https://is-gd-su.vercel.app/" class="btn">HYPERLINK</a>
+            <a href="https://bypasser-pi-ten.vercel.app/" class="btn">BYPASSER</a>
+            <a href="https://discord.gg/J942CruNSJ" class="btn">DISCORD SERVER</a>
+        </div>
     </div>
 
 </body>
