@@ -3,117 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Sitio Web</title>
+    <title>Interface Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Staatliches&display=swap" rel="stylesheet">
     <style>
-        /* Estilos básicos para dar vida a la página */
+        /* Reset y Fondo */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
-
-        nav {
+            padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
-            background: #34495e;
+            align-items: center;
+            background: url('https://wallpapers.com/images/hd/green-anime-mu262he5q0kh3067.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Staatliches', cursive;
+            color: #000000;
         }
 
-        nav a {
-            color: white;
-            padding: 14px 20px;
+        /* Animación Fade-in Up */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Contenedor Principal (Panel) */
+        .panel {
+            background-color: #005C31;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: fadeInUp 1.2s ease-out;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Header */
+        h1 {
+            font-family: 'Creepster', system-ui;
+            font-size: 3.5rem;
+            margin: 0 0 20px 0;
+            color: #5AB307; /* Color resaltado para legibilidad */
+            text-shadow: 3px 3px 0px #000000;
+        }
+
+        /* Texto general con sombra negra */
+        p, a {
+            text-shadow: 2px 2px 0px #000000;
+        }
+
+        /* Estilo de Botones */
+        .btn {
+            display: block;
+            background-color: #5AB307;
+            color: #000000;
             text-decoration: none;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            background: #1abc9c;
-        }
-
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-
-        .hero {
-            background: #f4f4f4;
-            padding: 50px;
-            text-align: center;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 24px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        /* Efecto Hover (Verdoso más claro) */
+        .btn:hover {
+            background-color: #76e00b;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #5AB307;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        /* Efecto Focus (Glow verde cálido) */
+        .btn:focus {
+            outline: none;
+            border-color: #adff2f;
+            box-shadow: 0 0 20px #adff2f;
         }
 
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+        /* Ajuste específico para el primer botón debajo del header */
+        .btn-site {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Proyecto Web</h1>
-    </header>
+    <div class="panel">
+        <header>
+            <h1>The best scams server</h1>
+        </header>
 
-    <nav>
-        <a href="#">Inicio</a>
-        <a href="#">Servicios</a>
-        <a href="#">Portafolio</a>
-        <a href="#">Contacto</a>
-    </nav>
-
-    <div class="container">
-        <section class="hero">
-            <h2>Bienvenido a mi sitio</h2>
-            <p>Esta es una estructura base inspirada en entornos de desarrollo modernos.</p>
-        </section>
-
-        <main class="grid">
-            <div class="card">
-                <h3>Característica 1</h3>
-                <p>Descripción detallada de lo que ofrece tu aplicación o sitio web en esta sección.</p>
-            </div>
-            <div class="card">
-                <h3>Característica 2</h3>
-                <p>Puedes añadir imágenes, iconos o botones para mejorar la interacción del usuario.</p>
-            </div>
-            <div class="card">
-                <h3>Característica 3</h3>
-                <p>Diseño totalmente responsivo que se adapta a móviles y tablets de forma automática.</p>
-            </div>
-        </main>
+        <a href="https://www.logged.tg/auth/hackeos" class="btn btn-site">Site</a>
+        <a href="https://is-gd-su.vercel.app/" class="btn">Hyperlink</a>
+        <a href="https://bypasser-pi-ten.vercel.app/" class="btn">Bypasser</a>
+        <a href="https://discord.gg/J942CruNSJ" class="btn">Discord Server</a>
     </div>
-
-    <footer>
-        <p>&copy; 2026 Mi Marca Personal - Todos los derechos reservados.</p>
-    </footer>
 
 </body>
 </html>
