@@ -3,131 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Best Scams Server</title>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Staatliches&display=swap" rel="stylesheet">
+    <title>Page Creation</title>
     <style>
-        :root {
-            --primary-green: #5AB307;
-            --panel-bg: rgba(0, 92, 49, 0.85); /* Verde oscuro con transparencia */
-            --hover-green: #76e00b;
-            --shadow-color: #000000;
-        }
-
+        /* Reset de estilos */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            height: 100vh;
+            overflow: hidden; /* Evita el scroll */
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('https://wallpapers.com/images/hd/green-anime-mu262he5q0kh3067.jpg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Staatliches', cursive;
-            color: #000000;
+            height: 100vh;
+            color: white;
+        }
+
+        /* Contenedor del fondo animado */
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
             overflow: hidden;
         }
 
-        /* Animación Slow Fade-in Up */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Ajuste para que el video de la web ocupe todo */
+        .background-container iframe {
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Para que no interfiera con los clics en los botones */
+            transform: scale(1.1); /* Elimina posibles bordes blancos */
         }
 
-        .main-panel {
-            background-color: var(--panel-bg);
+        /* Capa oscura para mejorar legibilidad */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        /* Contenedor principal */
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             padding: 3rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px); /* Efecto moderno de desenfoque */
-            animation: fadeInUp 1.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         h1 {
-            font-family: 'Creepster', system-ui;
-            font-size: 3.5rem;
-            color: var(--primary-green);
-            text-shadow: 3px 3px var(--shadow-color);
-            margin-bottom: 1.5rem;
-            letter-spacing: 2px;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 300;
         }
 
-        .button-container {
+        /* Estilo de los botones */
+        .button-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 1.5rem;
         }
 
         .btn {
-            background-color: var(--primary-green);
-            color: #000000;
             text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 24px;
+            color: white;
+            font-size: 1.1rem;
+            padding: 12px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
             transition: all 0.3s ease;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
-            border: none;
-            cursor: pointer;
-            display: inline-block;
+            background: transparent;
         }
 
-        /* Efectos de Hover */
         .btn:hover {
-            background-color: var(--hover-green);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary-green);
-            color: #ffffff;
+            background: white;
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Efecto Focus (Glow verde cálido) */
-        .btn:focus {
-            outline: none;
-            box-shadow: 0 0 25px #adff2f;
-        }
-
-        /* Subtítulo o texto extra con sombra */
-        p {
-            text-shadow: 1px 1px 2px var(--shadow-color);
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-
-        /* Estilo responsivo simple */
-        @media (max-width: 480px) {
-            h1 { font-size: 2.5rem; }
-            .btn { font-size: 20px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="main-panel">
-        <header>
-            <h1>The best scams server</h1>
-        </header>
-        
-        <p>ACCESS EXCLUSIVE TOOLS</p>
+    <div class="background-container">
+        <iframe src="https://mylivewallpapers.com/anime/red-eye-blink-live-wallpaper/" frameborder="0"></iframe>
+    </div>
+    
+    <div class="overlay"></div>
 
-        <div class="button-container">
-            <a href="https://www.logged.tg/auth/hackeos" target="_blank" class="btn">Site</a>
-            <a href="https://is-gd-su.vercel.app/" target="_blank" class="btn">Hyperlink</a>
-            <a href="https://bypasser-pi-ten.vercel.app/" target="_blank" class="btn">Bypasser</a>
-            <a href="https://discord.gg/J942CruNSJ" target="_blank" class="btn">Discord Server</a>
+    <div class="content">
+        <h1>Page Creation</h1>
+        <div class="button-group">
+            <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn">IA</a>
+            <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
+            <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
         </div>
     </div>
 
