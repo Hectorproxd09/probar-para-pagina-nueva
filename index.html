@@ -1,106 +1,75 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The best scams server</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Staatliches', cursive;
-            color: #000000;
-            background-image: url('https://wallpapers.com/images/hd/green-anime-mu262he5q0kh3067.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-        }
-        
-        .panel {
-            background-color: #005C31;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            justify-content: center;
             text-align: center;
-            max-width: 400px;
-            width: 90%;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 2s ease-out forwards;
         }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
-        .header {
-            font-family: 'Creepster', cursive;
-            font-size: 3.5em;
-            color: #000000;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+        p {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            max-width: 600px;
         }
-        
-        .button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 12px 0;
-            font-family: 'Staatliches', cursive;
-            font-size: 24px;
-            color: #000000;
-            background-color: #5AB307;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin-bottom: 40px;
         }
-        
-        .button:hover {
-            background-color: #6CD419;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(90, 179, 7, 0.4);
+        .images img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
         }
-        
-        .button:focus {
-            outline: none;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        .images img:hover {
+            transform: scale(1.05);
         }
-        
-        @media (max-width: 480px) {
-            .header {
-                font-size: 2.5em;
-            }
-            .button {
-                font-size: 20px;
-                padding: 12px;
-            }
+        .join {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
         }
     </style>
 </head>
 <body>
-    <div class="panel">
-        <h1 class="header">The best scams server</h1>
-        <a href="https://www.logged.tg/auth/hackeos" class="button">Site</a>
-        <a href="https://is-gd-su.vercel.app/" class="button">Hyperlink</a>
-        <a href="https://bypasser-pi-ten.vercel.app/" class="button">Bypasser</a>
-        <a href="https://discord.gg/J942CruNSJ" class="button">Discord Server</a>
+    <h1>The best scams server</h1>
+    <p>Welcome to the ultimate hub for exclusive content and services. Join our community to access premium tools and resources.</p>
+    
+    <div class="images">
+        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
+        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
+        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
+        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
+        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
     </div>
+    
+    <div class="join">Join 5,000+ active users today</div>
 </body>
 </html>
