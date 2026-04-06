@@ -10,111 +10,128 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            overflow: hidden; /* Evita el scroll */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: white;
+            background-color: #000;
         }
 
-        /* Contenedor del fondo animado */
-        .background-container {
+        /* Contenedor para el video de YouTube */
+        .video-background {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
+            pointer-events: none;
             overflow: hidden;
         }
 
-        /* Ajuste para que el video de la web ocupe todo */
-        .background-container iframe {
+        /* Escalamos el iframe para ocultar bordes y logos de YT */
+        .video-background iframe {
             width: 100vw;
-            height: 100vh;
-            pointer-events: none; /* Para que no interfiera con los clics en los botones */
-            transform: scale(1.1); /* Elimina posibles bordes blancos */
+            height: 56.25vw; /* Ratio 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* Ratio 16:9 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        /* Capa oscura para mejorar legibilidad */
+        /* Capa de contraste */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 0;
         }
 
-        /* Contenedor principal */
-        .content {
+        /* Contenedor elegante (Glassmorphism) */
+        .glass-panel {
             position: relative;
             z-index: 1;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
             padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            color: #fff;
+            font-size: 2rem;
             font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
         }
 
-        /* Estilo de los botones */
-        .button-group {
+        /* Grupo de botones */
+        .button-list {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1.2rem;
         }
 
         .btn {
+            display: block;
+            padding: 14px;
+            color: #fff;
             text-decoration: none;
-            color: white;
-            font-size: 1.1rem;
-            padding: 12px 40px;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            background: transparent;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .btn:hover {
-            background: white;
+            background: #fff;
             color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+            border-color: #fff;
         }
-
     </style>
 </head>
 <body>
 
-    <div class="background-container">
-        <iframe src="https://mylivewallpapers.com/anime/red-eye-blink-live-wallpaper/" frameborder="0"></iframe>
+    <div class="video-background">
+        <iframe 
+            src="https://www.youtube.com/embed/gxetb5bjA34?autoplay=1&mute=1&loop=1&playlist=gxetb5bjA34&controls=0&showinfo=0&rel=0&modestbranding=1" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
     </div>
-    
+
     <div class="overlay"></div>
 
-    <div class="content">
+    <div class="glass-panel">
         <h1>Page Creation</h1>
-        <div class="button-group">
+        <nav class="button-list">
             <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn">IA</a>
-            <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
             <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
-        </div>
+            <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
+        </nav>
     </div>
 
 </body>
