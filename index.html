@@ -1,75 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The best scams server</title>
+    <title>Mi Sitio Web</title>
     <style>
+        /* Estilos básicos para dar vida a la página */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: #2c3e50;
             color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            padding: 1rem 0;
             text-align: center;
         }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-        .images {
+
+        nav {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
             justify-content: center;
-            max-width: 800px;
-            margin-bottom: 40px;
+            background: #34495e;
         }
-        .images img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
+
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 14px;
         }
-        .images img:hover {
-            transform: scale(1.05);
+
+        nav a:hover {
+            background: #1abc9c;
         }
-        .join {
-            font-size: 1.5em;
-            font-weight: bold;
-            background: rgba(255,255,255,0.2);
-            padding: 15px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .hero {
+            background: #f4f4f4;
+            padding: 50px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
-    <h1>The best scams server</h1>
-    <p>Welcome to the ultimate hub for exclusive content and services. Join our community to access premium tools and resources.</p>
-    
-    <div class="images">
-        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
-        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
-        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
-        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
-        <img src="http://img.b2bpic.net/free-photo/cute-anime-fairy-girl_23-2151567480.jpg" alt="User 5" loading="lazy">
+
+    <header>
+        <h1>Proyecto Web</h1>
+    </header>
+
+    <nav>
+        <a href="#">Inicio</a>
+        <a href="#">Servicios</a>
+        <a href="#">Portafolio</a>
+        <a href="#">Contacto</a>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h2>Bienvenido a mi sitio</h2>
+            <p>Esta es una estructura base inspirada en entornos de desarrollo modernos.</p>
+        </section>
+
+        <main class="grid">
+            <div class="card">
+                <h3>Característica 1</h3>
+                <p>Descripción detallada de lo que ofrece tu aplicación o sitio web en esta sección.</p>
+            </div>
+            <div class="card">
+                <h3>Característica 2</h3>
+                <p>Puedes añadir imágenes, iconos o botones para mejorar la interacción del usuario.</p>
+            </div>
+            <div class="card">
+                <h3>Característica 3</h3>
+                <p>Diseño totalmente responsivo que se adapta a móviles y tablets de forma automática.</p>
+            </div>
+        </main>
     </div>
-    
-    <div class="join">Join 5,000+ active users today</div>
+
+    <footer>
+        <p>&copy; 2026 Mi Marca Personal - Todos los derechos reservados.</p>
+    </footer>
+
 </body>
 </html>
