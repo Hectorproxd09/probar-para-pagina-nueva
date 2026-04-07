@@ -34,19 +34,17 @@
             overflow: hidden;
         }
 
-        /* Escalamos el iframe para ocultar bordes y logos de YT */
         .video-background iframe {
             width: 100vw;
-            height: 56.25vw; /* Ratio 16:9 */
+            height: 56.25vw;
             min-height: 100vh;
-            min-width: 177.77vh; /* Ratio 16:9 */
+            min-width: 177.77vh;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        /* Capa de contraste */
         .overlay {
             position: fixed;
             top: 0;
@@ -57,7 +55,6 @@
             z-index: 0;
         }
 
-        /* Contenedor elegante (Glassmorphism) */
         .glass-panel {
             position: relative;
             z-index: 1;
@@ -82,7 +79,6 @@
             text-transform: uppercase;
         }
 
-        /* Grupo de botones */
         .button-list {
             display: flex;
             flex-direction: column;
@@ -101,6 +97,7 @@
             border-radius: 12px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -109,6 +106,51 @@
             transform: scale(1.05);
             box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
             border-color: #fff;
+        }
+
+        /* --- NUEVO: ESTILOS DEL SIDEBAR IZQUIERDO --- */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+        }
+
+        .lang-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-lang {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .instruction-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            height: 100%;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            white-space: pre-line;
         }
     </style>
 </head>
@@ -128,11 +170,46 @@
     <div class="glass-panel">
         <h1>Page Creation</h1>
         <nav class="button-list">
-            <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn">IA</a>
+            <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
             <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
             <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
+            <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
         </nav>
     </div>
+
+    <aside class="sidebar">
+        <div class="lang-container">
+            <button class="btn btn-lang" onclick="setLang('es')">Español</button>
+            <button class="btn btn-lang" onclick="setLang('en')">English</button>
+        </div>
+        <div id="text-target" class="instruction-box">
+            <p style="opacity: 0.5; text-align: center;">Selecciona un idioma / Select a language</p>
+        </div>
+    </aside>
+
+    <script>
+        const content = {
+            es: `INSTRUCCIONES:
+            Comienza solicitando a una IA la creación de un archivo HTML utilizando un prompt.
+            Luego, crea un repositorio en GitHub. Dentro del repositorio, agrega un nuevo archivo llamado "index.html" y pega el código HTML generado.
+            Guarda los cambios en el repositorio para asegurarte de no perder el archivo.
+            Dirígete a Vercel y regístrate o inicia sesión utilizando tu cuenta de GitHub.
+            Una vez dentro, selecciona la opción "Add New Project" y elige el repositorio que creaste.
+            Finalmente, despliega el proyecto.`,
+            
+            en: `INSTRUCTIONS:
+            Start by requesting an AI to create an HTML file using a prompt.
+            Then, create a repository on GitHub. Inside the repository, add a new file called "index.html" and paste the generated HTML code.
+            Save the changes to the repository to ensure you don't lose the file.
+            Go to Vercel and register or log in using your GitHub account.
+            Once logged in, select the "Add New Project" option and choose the repository you created.
+            Finally, expand the project.`
+        };
+
+        function setLang(lang) {
+            document.getElementById('text-target').innerText = content[lang];
+        }
+    </script>
 
 </body>
 </html>
