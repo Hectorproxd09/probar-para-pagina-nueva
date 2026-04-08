@@ -108,19 +108,19 @@
             border-color: #fff;
         }
 
-        /* --- NUEVO: ESTILOS DEL SIDEBAR IZQUIERDO --- */
+        /* --- SIDEBAR MÁS FINO --- */
         .sidebar {
             position: fixed;
             right: 0;
             top: 0;
-            width: 350px;
+            width: 260px; /* Ancho más fino */
             height: 100vh;
             z-index: 2;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem;
+            padding: 1.5rem; /* Relleno ajustado */
             display: flex;
             flex-direction: column;
             color: #fff;
@@ -129,28 +129,37 @@
 
         .lang-container {
             display: flex;
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            gap: 8px;
+            margin-bottom: 1.2rem;
         }
 
         .btn-lang {
             flex: 1;
-            padding: 8px;
-            font-size: 0.8rem;
+            padding: 6px;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .instruction-box {
             background: rgba(0, 0, 0, 0.2);
-            padding: 1.5rem;
+            padding: 1.2rem;
             border-radius: 15px;
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.85rem;
+            line-height: 1.5;
             height: 100%;
             overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.05);
             white-space: pre-line;
+        }
+
+        /* Scrollbar discreto */
+        .instruction-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .instruction-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -183,7 +192,7 @@
             <button class="btn btn-lang" onclick="setLang('en')">English</button>
         </div>
         <div id="text-target" class="instruction-box">
-            <p style="opacity: 0.5; text-align: center;">Selecciona un idioma / Select a language</p>
+            <p style="opacity: 0.5; text-align: center; font-size: 0.8rem;">Selecciona un idioma / Select language</p>
         </div>
     </aside>
 
