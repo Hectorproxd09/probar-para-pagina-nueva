@@ -109,107 +109,48 @@
             border-color: #fff;
         }
 
-        /* --- LÓGICA DE DESPLIEGUE HACIA LA DERECHA CON MINI-PANELES Y FLECHAS --- */
+        /* --- LÓGICA DE DESPLIEGUE HACIA LA DERECHA --- */
         .dropdown {
             position: relative;
         }
 
         .dropdown-content {
             position: absolute;
-            left: calc(100% + 10px); /* Espacio para la flecha */
-            top: 50%;
-            transform: translateY(-50%);
+            left: 100%; /* Empieza al lado derecho del botón IA */
+            top: 0;
             display: flex;
             flex-direction: column;
-            gap: 15px; /* Espacio entre mini-paneles */
-            padding-left: 20px; /* Espacio para el inicio de la flecha */
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Mini-panel individual para cada sub-botón */
-        .mini-panel {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateX(-30px) scale(0.9);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative; /* Para posicionar la flecha */
+            gap: 10px;
+            padding-left: 20px;
+            pointer-events: none; /* Evita que se clickeen mientras están ocultos */
         }
 
         .btn-sub {
-            width: 180px; /* Ancho fijo para los mini-paneles */
-            padding: 12px;
-            font-size: 0.9rem;
-            border: none; /* Quitamos el borde del botón, ya lo tiene el panel */
-            background: transparent; /* Fondo transparente para usar el del panel */
-            border-radius: 15px; /* Coincidir con el panel */
-        }
-
-        /* Flechas conectoras (pseudoelementos en el mini-panel) */
-        .mini-panel::before {
-            content: '';
-            position: absolute;
-            right: 100%; /* Sale hacia la izquierda */
-            top: 50%;
-            transform: translateY(-50%) scaleX(0); /* Empieza oculta y colapsada */
-            transform-origin: right center; /* Anima desde la derecha */
-            width: 25px; /* Largo de la línea de la flecha */
-            height: 2px;
-            background-color: rgba(255, 255, 255, 0.5);
+            width: 160px;
+            padding: 10px;
+            font-size: 0.85rem;
             opacity: 0;
-            transition: all 0.4s ease-out;
-            z-index: -1;
+            transform: translateX(-50px); /* Empiezan "dentro" del área del botón IA */
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
         }
 
-        .mini-panel::after {
-            content: '';
-            position: absolute;
-            right: calc(100% + 20px); /* Punta de la flecha */
-            top: 50%;
-            transform: translateY(-50%) scale(0); /* Empieza oculta y pequeña */
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-            border-right: 8px solid rgba(255, 255, 255, 0.5); /* Punta hacia la derecha */
-            opacity: 0;
-            transition: all 0.3s ease-out;
-            z-index: -1;
-        }
-
-        /* Estados Hover para activar animaciones */
+        /* Al pasar el mouse por el contenedor, se activan los hijos */
         .dropdown:hover .dropdown-content {
             pointer-events: auto;
         }
 
-        /* Animación secuencial de los mini-paneles */
-        .dropdown:hover .mini-panel {
+        .dropdown:hover .btn-sub {
             opacity: 1;
-            transform: translateX(0) scale(1);
+            transform: translateX(0);
         }
 
-        /* Retrasos escalonados para los botones (0.1s - 0.4s) */
-        .dropdown:hover .mini-panel:nth-child(1) { transition-delay: 0.1s; }
-        .dropdown:hover .mini-panel:nth-child(2) { transition-delay: 0.2s; }
-        .dropdown:hover .mini-panel:nth-child(3) { transition-delay: 0.3s; }
-        .dropdown:hover .mini-panel:nth-child(4) { transition-delay: 0.4s; }
-
-        /* Animación de las flechas: aparece DESPUÉS de que todos los botones terminen (retraso > 0.4s) */
-        .dropdown:hover .mini-panel::before {
-            opacity: 1;
-            transform: translateY(-50%) scaleX(1);
-            transition-delay: 0.6s; /* Comienza después del último botón */
-        }
-
-        .dropdown:hover .mini-panel::after {
-            opacity: 1;
-            transform: translateY(-50%) scale(1);
-            transition-delay: 0.8s; /* Un poco después de la línea */
-        }
-
+        /* Retrasos escalonados para el efecto "slow" uno tras otro */
+        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; }
+        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; }
+        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; }
+        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; }
 
         /* --- PANEL DE INSTRUCCIONES --- */
         .instruction-panel {
@@ -268,18 +209,10 @@
                 <div class="dropdown">
                     <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
                     <div class="dropdown-content">
-                        <div class="mini-panel">
-                            <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        </div>
-                        <div class="mini-panel">
-                            <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
-                        </div>
-                        <div class="mini-panel">
-                            <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
-                        </div>
-                        <div class="mini-panel">
-                            <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
-                        </div>
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
                     </div>
                 </div>
 
