@@ -55,7 +55,7 @@
             z-index: 0;
         }
 
-        /* Contenedor Principal Centrado */
+        /* Contenedor Principal */
         .main-container {
             position: relative;
             z-index: 1;
@@ -117,6 +117,31 @@
             border-color: #fff;
         }
 
+        /* --- LÓGICA DEL DESPLEGABLE IA --- */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+            padding-left: 20px; /* Indentación para que se note que son sub-botones */
+        }
+
+        /* Muestra los botones cuando pasas el mouse por el contenedor del dropdown */
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+
+        .btn-sub {
+            padding: 10px;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.01);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
         /* --- PANEL DE INSTRUCCIONES ABAJO --- */
         .instruction-panel {
             width: 100%;
@@ -127,7 +152,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1.5rem;
             color: #fff;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
         }
 
         .lang-container {
@@ -141,7 +165,6 @@
             padding: 6px;
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .instruction-content {
@@ -152,30 +175,18 @@
             line-height: 1.5;
             max-height: 150px;
             overflow-y: auto;
-            border: 1px solid rgba(255, 255, 255, 0.05);
             white-space: pre-line;
             text-align: left;
         }
 
-        /* Scrollbar discreto */
-        .instruction-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .instruction-content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
+        .instruction-content::-webkit-scrollbar { width: 4px; }
+        .instruction-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div class="video-background">
-        <iframe 
-            src="https://www.youtube.com/embed/gxetb5bjA34?autoplay=1&mute=1&loop=1&playlist=gxetb5bjA34&controls=0&showinfo=0&rel=0&modestbranding=1" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/gxetb5bjA34?autoplay=1&mute=1&loop=1&playlist=gxetb5bjA34&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <div class="overlay"></div>
@@ -184,7 +195,17 @@
         <div class="glass-panel">
             <h1>Page Creation</h1>
             <nav class="button-list">
-                <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
+                
+                <div class="dropdown">
+                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
+                    <div class="dropdown-content">
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                    </div>
+                </div>
+
                 <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
                 <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
                 <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
