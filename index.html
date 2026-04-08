@@ -109,82 +109,58 @@
             border-color: #fff;
         }
 
-        /* --- LÓGICA DE PANEL ÚNICO DESPLEGABLE --- */
+        /* --- SUB-BOTONES IA FLOTANTES --- */
         .dropdown {
             position: relative;
         }
 
         .dropdown-content {
             position: absolute;
-            left: calc(100% + 40px);
+            left: calc(100% + 20px);
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 12px;
-            padding: 20px;
-            
-            /* Único Panel para todos */
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            
-            /* Efecto Inicial (Oculto) */
-            opacity: 0;
+            pointer-events: none;
             visibility: hidden;
-            transform: translate(-20px, -50%); /* Fade In Left position */
-            
-            /* El panel aparece 1s después que los botones (0.4s de botones + 1s de espera = 1.4s) */
-            transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
-            transition-delay: 1.4s; 
         }
 
         .btn-sub {
             width: 160px;
             padding: 10px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: translateX(-20px);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
         }
 
-        /* Hover sobre el botón IA o su área activa el despliegue */
         .dropdown:hover .dropdown-content {
-            opacity: 1;
+            pointer-events: auto;
             visibility: visible;
-            transform: translate(0, -50%);
         }
 
-        /* Los botones salen primero */
         .dropdown:hover .btn-sub {
             opacity: 1;
             transform: translateX(0);
+            /* Animación de movimiento sutil */
+            animation: floating 3s ease-in-out infinite;
         }
 
-        /* Retrasos de los botones individuales */
-        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; }
-        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; }
-        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; }
-        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; }
+        /* Retrasos de aparición y desfase de animación */
+        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; animation-delay: 0s; }
+        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; animation-delay: 0.5s; }
+        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; animation-delay: 1s; }
+        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; animation-delay: 1.5s; }
 
-        /* Flechas animadas (Pseudoelementos del Panel único) */
-        .dropdown-content::before {
-            content: '←';
-            position: absolute;
-            left: -30px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.4);
-            font-size: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.4s;
-            transition-delay: 1.6s; /* Aparece después del panel */
-        }
-
-        .dropdown:hover .dropdown-content::before {
-            opacity: 1;
+        /* Keyframes para el movimiento sutil */
+        @keyframes floating {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-5px) translateX(2px); }
+            100% { transform: translateY(0px) translateX(0px); }
         }
 
         /* --- PANEL DE INSTRUCCIONES --- */
@@ -230,7 +206,6 @@
         <div class="glass-panel">
             <h1>Page Creation</h1>
             <nav class="button-list">
-                
                 <div class="dropdown">
                     <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
                     <div class="dropdown-content">
@@ -240,7 +215,6 @@
                         <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
                     </div>
                 </div>
-
                 <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
                 <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
                 <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
@@ -267,7 +241,6 @@
             Dirígete a Vercel y regístrate o inicia sesión utilizando tu cuenta de GitHub.
             Una vez dentro, selecciona la opción "Add New Project" y elige el repositorio que creaste.
             Finalmente, despliega el proyecto.`,
-            
             en: `INSTRUCTIONS:
             Start by requesting an AI to create an HTML file using a prompt.
             Then, create a repository on GitHub. Inside the repository, add a new file called "index.html" and paste the generated HTML code.
