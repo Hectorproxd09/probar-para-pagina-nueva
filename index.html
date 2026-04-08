@@ -99,7 +99,7 @@
             background: rgba(255, 255, 255, 0.03);
             cursor: pointer;
             position: relative;
-            z-index: 5;
+            z-index: 2;
         }
 
         .btn:hover {
@@ -109,59 +109,107 @@
             border-color: #fff;
         }
 
-        /* --- SUB-BOTONES IA FLOTANTES --- */
+        /* --- LÓGICA DE DESPLIEGUE HACIA LA DERECHA CON MINI-PANELES Y FLECHAS --- */
         .dropdown {
             position: relative;
         }
 
         .dropdown-content {
             position: absolute;
-            left: calc(100% + 20px);
+            left: calc(100% + 10px); /* Espacio para la flecha */
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px; /* Espacio entre mini-paneles */
+            padding-left: 20px; /* Espacio para el inicio de la flecha */
             pointer-events: none;
-            visibility: hidden;
+            z-index: 1;
         }
 
-        .btn-sub {
-            width: 160px;
-            padding: 10px;
-            font-size: 0.85rem;
-            opacity: 0;
-            transform: translateX(-20px);
+        /* Mini-panel individual para cada sub-botón */
+        .mini-panel {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateX(-30px) scale(0.9);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative; /* Para posicionar la flecha */
         }
 
+        .btn-sub {
+            width: 180px; /* Ancho fijo para los mini-paneles */
+            padding: 12px;
+            font-size: 0.9rem;
+            border: none; /* Quitamos el borde del botón, ya lo tiene el panel */
+            background: transparent; /* Fondo transparente para usar el del panel */
+            border-radius: 15px; /* Coincidir con el panel */
+        }
+
+        /* Flechas conectoras (pseudoelementos en el mini-panel) */
+        .mini-panel::before {
+            content: '';
+            position: absolute;
+            right: 100%; /* Sale hacia la izquierda */
+            top: 50%;
+            transform: translateY(-50%) scaleX(0); /* Empieza oculta y colapsada */
+            transform-origin: right center; /* Anima desde la derecha */
+            width: 25px; /* Largo de la línea de la flecha */
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transition: all 0.4s ease-out;
+            z-index: -1;
+        }
+
+        .mini-panel::after {
+            content: '';
+            position: absolute;
+            right: calc(100% + 20px); /* Punta de la flecha */
+            top: 50%;
+            transform: translateY(-50%) scale(0); /* Empieza oculta y pequeña */
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 8px solid rgba(255, 255, 255, 0.5); /* Punta hacia la derecha */
+            opacity: 0;
+            transition: all 0.3s ease-out;
+            z-index: -1;
+        }
+
+        /* Estados Hover para activar animaciones */
         .dropdown:hover .dropdown-content {
             pointer-events: auto;
-            visibility: visible;
         }
 
-        .dropdown:hover .btn-sub {
+        /* Animación secuencial de los mini-paneles */
+        .dropdown:hover .mini-panel {
             opacity: 1;
-            transform: translateX(0);
-            /* Animación de movimiento sutil */
-            animation: floating 3s ease-in-out infinite;
+            transform: translateX(0) scale(1);
         }
 
-        /* Retrasos de aparición y desfase de animación */
-        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; animation-delay: 0s; }
-        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; animation-delay: 0.5s; }
-        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; animation-delay: 1s; }
-        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; animation-delay: 1.5s; }
+        /* Retrasos escalonados para los botones (0.1s - 0.4s) */
+        .dropdown:hover .mini-panel:nth-child(1) { transition-delay: 0.1s; }
+        .dropdown:hover .mini-panel:nth-child(2) { transition-delay: 0.2s; }
+        .dropdown:hover .mini-panel:nth-child(3) { transition-delay: 0.3s; }
+        .dropdown:hover .mini-panel:nth-child(4) { transition-delay: 0.4s; }
 
-        /* Keyframes para el movimiento sutil */
-        @keyframes floating {
-            0% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(-5px) translateX(2px); }
-            100% { transform: translateY(0px) translateX(0px); }
+        /* Animación de las flechas: aparece DESPUÉS de que todos los botones terminen (retraso > 0.4s) */
+        .dropdown:hover .mini-panel::before {
+            opacity: 1;
+            transform: translateY(-50%) scaleX(1);
+            transition-delay: 0.6s; /* Comienza después del último botón */
         }
+
+        .dropdown:hover .mini-panel::after {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+            transition-delay: 0.8s; /* Un poco después de la línea */
+        }
+
 
         /* --- PANEL DE INSTRUCCIONES --- */
         .instruction-panel {
@@ -176,10 +224,17 @@
         }
 
         .lang-container {
-            display: flex; gap: 10px; margin-bottom: 1rem;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
         }
 
-        .btn-lang { flex: 1; padding: 6px; font-size: 0.75rem; text-transform: uppercase; }
+        .btn-lang {
+            flex: 1;
+            padding: 6px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
 
         .instruction-content {
             background: rgba(0, 0, 0, 0.2);
@@ -192,6 +247,9 @@
             white-space: pre-line;
             text-align: left;
         }
+
+        .instruction-content::-webkit-scrollbar { width: 4px; }
+        .instruction-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -206,15 +264,25 @@
         <div class="glass-panel">
             <h1>Page Creation</h1>
             <nav class="button-list">
+                
                 <div class="dropdown">
                     <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
-                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
-                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                        <div class="mini-panel">
+                            <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        </div>
+                        <div class="mini-panel">
+                            <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        </div>
+                        <div class="mini-panel">
+                            <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        </div>
+                        <div class="mini-panel">
+                            <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                        </div>
                     </div>
                 </div>
+
                 <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
                 <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
                 <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
@@ -241,6 +309,7 @@
             Dirígete a Vercel y regístrate o inicia sesión utilizando tu cuenta de GitHub.
             Una vez dentro, selecciona la opción "Add New Project" y elige el repositorio que creaste.
             Finalmente, despliega el proyecto.`,
+            
             en: `INSTRUCTIONS:
             Start by requesting an AI to create an HTML file using a prompt.
             Then, create a repository on GitHub. Inside the repository, add a new file called "index.html" and paste the generated HTML code.
