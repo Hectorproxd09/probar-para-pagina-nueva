@@ -3,626 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Creation Ultra</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+    <title>Master Creator UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* =========================================
-           CSS VARIABLES & RESET
-           ========================================= */
         :root {
-            --bg-dark: #030303;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --text-main: #ffffff;
-            --text-muted: rgba(255, 255, 255, 0.7);
-            
-            /* Paleta de colores vibrantes */
-            --c1: #ff6b6b;
-            --c2: #4ecdc4;
-            --c3: #ffe66d;
-            --c4: #a55eea;
-            
-            --gradient-vibe: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c4) 100%);
-            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent: #ff6b6b;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            outline: none; -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
-        html, body {
+        body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            height: 100vh; width: 100vw;
+            background: #000;
+            color: white;
+            height: 100vh;
             overflow: hidden;
-            cursor: none; /* Ocultar cursor real */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* =========================================
-           FONDO Y EFECTOS ATMOSFÉRICOS
-           ========================================= */
-        .scenery {
+        /* --- FONDO DE VIDEO ORIGINAL --- */
+        .bg-video {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -5; pointer-events: none;
+            z-index: -2;
+            filter: brightness(0.4) contrast(1.2);
         }
-
-        /* Video de fondo con filtro */
-        .video-background {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            filter: grayscale(100%) brightness(30%) contrast(120%);
-            opacity: 0.8;
-        }
-
-        .video-background iframe {
-            width: 100vw; height: 56.25vw; /* 16:9 ratio */
+        .bg-video iframe {
+            width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
+            pointer-events: none;
         }
 
-        /* Capa de degradado "Aurora" animada */
-        .aurora-layer {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(165, 94, 234, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.15) 0%, transparent 40%);
-            z-index: -4;
-            animation: auroraLoop 20s ease infinite alternate;
-        }
-
-        @keyframes auroraLoop {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.5; }
-            50% { transform: scale(1.1) translate(1%, -1%); opacity: 1; }
-            100% { transform: scale(1) translate(-1%, 1%); opacity: 0.5; }
-        }
-
-        /* Viñeta para centrar la atención */
-        .vignette {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 140%);
-            z-index: -3;
-        }
-
-        .particles-container {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
-        }
-
-        /* =========================================
-           CURSOR PERSONALIZADO (SMOOTH)
-           ========================================= */
-        #custom-cursor {
+        .overlay {
             position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 10000;
-            mix-blend-mode: difference; /* Efecto visual al pasar sobre texto */
-        }
-
-        .cursor-dot {
-            width: 8px; height: 8px;
-            background-color: #fff;
-            border-radius: 50%;
-            position: absolute; transform: translate(-50%, -50%);
-        }
-
-        .cursor-ring {
-            width: 40px; height: 40px;
-            border: 1.5px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            position: absolute; transform: translate(-50%, -50%);
-            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border 0.3s;
-        }
-
-        /* Estados del cursor */
-        body.cursor-hovering .cursor-ring {
-            width: 60px; height: 60px;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        body.cursor-clicking .cursor-ring {
-            width: 30px; height: 30px;
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* =========================================
-           LAYOUT PRINCIPAL
-           ========================================= */
-        .main-wrapper {
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            min-height: 100vh; padding: 40px 20px;
-            perspective: 1200px; /* Para efecto 3D tilt */
-        }
-
-        .container-limited {
-            width: 100%; max-width: 480px;
-            display: flex; flex-direction: column; gap: 25px;
-        }
-
-        /* =========================================
-           ESTILOS GLASSMORPHISM
-           ========================================= */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            transform-style: preserve-3d; /* Importante para sub-elementos 3D */
-            
-            /* Animación de entrada */
-            opacity: 0; animation: cardEntry 1s var(--ease-out-expo) forwards;
-        }
-
-        .glass-card:nth-child(2) { animation-delay: 0.2s; }
-
-        @keyframes cardEntry {
-            from { opacity: 0; transform: translateY(40px) rotateX(-10deg); }
-            to { opacity: 1; transform: translateY(0) rotateX(0deg); }
-        }
-
-        /* =========================================
-           PANEL PRINCIPAL (BOTONES)
-           ========================================= */
-        .hero-panel { padding: 45px 35px; text-align: center; }
-
-        /* Título con gradiente animado */
-        .main-title {
-            font-size: 2rem; font-weight: 800;
-            letter-spacing: -1px; margin-bottom: 35px;
-            background: linear-gradient(90deg, var(--c1), var(--c2), var(--c4), var(--c1));
-            background-size: 300% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: gradientTitle 6s linear infinite;
-            transform: translateZ(30px); /* Efecto profundidad */
-        }
-
-        @keyframes gradientTitle {
-            to { background-position: 300% center; }
-        }
-
-        .nav-list {
-            display: flex; flex-direction: column; gap: 16px;
-            transform: translateZ(15px);
-        }
-
-        /* =========================================
-           BOTONES PREMIUM FX
-           ========================================= */
-        .btn-premium {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 24px; border-radius: 16px;
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main); text-decoration: none;
-            font-weight: 500; font-size: 0.95rem;
-            transition: all 0.4s var(--ease-out-expo);
-            position: relative; overflow: hidden; /* Para efecto shine */
-        }
-
-        .btn-premium:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px) translateZ(10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Efecto Shine al hacer hover */
-        .btn-premium::after {
-            content: ''; position: absolute; top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            transition: 0.5s;
+            background: radial-gradient(circle, transparent 20%, #000 150%);
+            z-index: -1;
         }
 
-        .btn-premium:hover::after { left: 100%; }
-
-        .btn-content { display: flex; align-items: center; gap: 14px; }
-        .btn-icon { font-size: 1.2rem; opacity: 0.9; }
-        
-        /* Flecha indicadora animada */
-        .btn-arrow {
-            font-size: 0.8rem; opacity: 0.5;
-            transition: transform 0.3s var(--ease-out-back), opacity 0.3s;
+        /* --- BARRA DE BÚSQUEDA --- */
+        .search-box {
+            position: absolute; top: 40px;
+            width: 100%; max-width: 400px;
+            z-index: 100;
+        }
+        #main-search {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            text-align: center;
+        }
+        #main-search:focus {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
         }
 
-        .btn-premium:hover .btn-arrow {
-            opacity: 1; transform: translateX(4px);
-            color: var(--c2);
-        }
-
-        /* =========================================
-           DROPDOWN ANIMADO
-           ========================================= */
-        .dropdown { position: relative; }
-
-        .dropdown-menu {
-            max-height: 0; overflow: hidden; /* Oculto por defecto */
-            display: flex; flex-direction: column; gap: 8px;
-            padding: 0 10px; margin-top: 0;
-            list-style: none;
-            transition: max-height 0.5s var(--ease-out-expo), margin 0.5s var(--ease-out-expo), padding 0.5s var(--ease-out-expo);
-        }
-
-        /* Estado abierto (activado por JS) */
-        .dropdown.is-open .dropdown-menu {
-            max-height: 300px; /* Suficiente para el contenido */
-            margin-top: 12px; padding: 10px;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        /* Rotar flecha del botón padre */
-        .dropdown.is-open .parent-btn .btn-arrow {
-            transform: rotate(90deg); opacity: 1; color: var(--c1);
-        }
-
-        /* Items del submenú con animación staggered */
-        .dropdown-menu li {
-            transform: translateY(-15px); opacity: 0;
-            transition: transform 0.4s var(--ease-out-back), opacity 0.4s;
-        }
-
-        .dropdown.is-open .dropdown-menu li {
-            transform: translateY(0); opacity: 1;
-        }
-
-        /* Delays para efecto cascada (hasta 4 items) */
-        .dropdown.is-open .dropdown-menu li:nth-child(1) { transition-delay: 0.05s; }
-        .dropdown.is-open .dropdown-menu li:nth-child(2) { transition-delay: 0.10s; }
-        .dropdown.is-open .dropdown-menu li:nth-child(3) { transition-delay: 0.15s; }
-        .dropdown.is-open .dropdown-menu li:nth-child(4) { transition-delay: 0.20s; }
-
-        .btn-sub {
-            padding: 12px 18px; font-size: 0.85rem;
-            border-radius: 10px; background: rgba(0, 0, 0, 0.15);
-            border-color: transparent; color: var(--text-muted);
-        }
-
-        .btn-sub:hover {
-            color: var(--text-main); background: rgba(255, 255, 255, 0.03);
-        }
-
-        /* =========================================
-           PANEL INSTRUCCIONES
-           ========================================= */
-        .info-panel { padding: 30px; }
-
-        .lang-selector {
-            display: flex; gap: 10px; margin-bottom: 25px;
-            transform: translateZ(10px);
-        }
-
-        .btn-lang {
-            flex: 1; justify-content: center;
-            padding: 10px; font-size: 0.8rem; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--text-muted);
-        }
-
-        .btn-lang.active {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: var(--text-main);
-            box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
-        }
-
-        /* Indicador activo animado */
-        .btn-lang::before {
-            content: ''; position: absolute; bottom: 0; left: 50%;
-            width: 0; height: 2px; background: var(--gradient-vibe);
-            transform: translateX(-50%); transition: width 0.3s;
-        }
-
-        .btn-lang.active::before { width: 40%; }
-
-        /* Contenedor de texto con scrollbar oculto */
-        .text-stream {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px; border-radius: 16px;
-            font-size: 0.9rem; line-height: 1.7;
-            color: var(--text-muted);
-            max-height: 220px; overflow-y: auto;
-            transform: translateZ(5px);
+        /* --- PANEL PRINCIPAL 3D --- */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: var(--shadow);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
             position: relative;
         }
 
-        /* Estilo para los números resaltados */
-        .text-stream b {
-            color: var(--c2); font-weight: 600;
-            background: rgba(78, 205, 196, 0.1);
-            padding: 1px 6px; border-radius: 4px; margin-right: 3px;
+        h1 {
+            font-size: 1.8rem; font-weight: 800;
+            margin-bottom: 30px; text-align: center;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            transform: translateZ(50px);
         }
 
-        .placeholder-txt { text-align: center; opacity: 0.5; padding: 20px 0; }
+        /* --- LISTA DE BOTONES Y DESPLIEGUE LATERAL --- */
+        .nav-menu { list-style: none; transform: translateZ(30px); }
 
-        /* Ocultar scrollbar pero mantener funcionalidad */
-        .text-stream { -ms-overflow-style: none; scrollbar-width: none; }
-        .text-stream::-webkit-scrollbar { display: none; }
+        .nav-item { position: relative; margin-bottom: 12px; }
+
+        .btn-main {
+            width: 100%;
+            padding: 16px 25px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            display: flex; justify-content: space-between;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-main:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        /* --- DESPLIEGUE A LA DERECHA (FLYOUT) --- */
+        .side-menu {
+            position: absolute;
+            left: 105%; top: 0;
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            width: 200px;
+            z-index: 10;
+        }
+
+        .nav-item:hover .side-menu { display: flex; }
+
+        .btn-sub {
+            padding: 12px 18px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.85rem;
+            animation: float 3s ease-in-out infinite; /* Animación flotante */
+        }
+
+        .btn-sub:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* Delays para la flotación */
+        .btn-sub:nth-child(2) { animation-delay: 0.5s; }
+        .btn-sub:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* --- CURSOR --- */
+        #cursor {
+            position: fixed; width: 20px; height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transition: transform 0.1s;
+            transform: translate(-50%, -50%);
+        }
 
     </style>
 </head>
 <body>
 
-    <div class="scenery">
-        <div class="video-background">
-            <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&wmode=transparent" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-        </div>
-        <div class="aurora-layer"></div>
-        <div class="vignette"></div>
-        <div class="particles-container" id="particles"></div>
+    <div id="cursor"></div>
+
+    <div class="bg-video">
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0" frameborder="0"></iframe>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="search-box">
+        <input type="text" id="main-search" placeholder="Buscar GitHub, ChatGPT, Gemini...">
     </div>
 
-    <div id="custom-cursor">
-        <div class="cursor-ring"></div>
-        <div class="cursor-dot"></div>
+    <div class="glass-panel" id="tilt-panel">
+        <h1>Page Creation</h1>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="btn-main">IA Tools <span>→</span></a>
+                <div class="side-menu">
+                    <a href="https://chatgpt.com" target="_blank" class="btn-sub">ChatGPT</a>
+                    <a href="https://gemini.google.com" target="_blank" class="btn-sub">Google Gemini</a>
+                    <a href="https://claude.ai" target="_blank" class="btn-sub">Claude AI</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="btn-main">GitHub <span>→</span></a>
+                <div class="side-menu">
+                    <a href="https://github.com" target="_blank" class="btn-sub">GitHub Home</a>
+                    <a href="https://github.com/new" target="_blank" class="btn-sub">New Repo</a>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a href="https://vercel.com" target="_blank" class="btn-main">Vercel Deploy <span>🚀</span></a>
+            </li>
+        </ul>
     </div>
-
-    <main class="main-wrapper">
-        <div class="container-limited">
-            
-            <div class="glass-card hero-panel" data-tilt>
-                <h1 class="main-title">Page Creation</h1>
-                
-                <nav class="nav-list">
-                    
-                    <div class="dropdown">
-                        <button class="btn-premium parent-btn" aria-haspopup="true">
-                            <span class="btn-content">
-                                <span class="btn-icon">🤖</span>
-                                <span class="btn-text">IA Tools</span>
-                            </span>
-                            <span class="btn-arrow">▶</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="https://gemini.google.com/" target="_blank" class="btn-premium btn-sub">Google Gemini</a></li>
-                            <li><a href="https://chatgpt.com/" target="_blank" class="btn-premium btn-sub">ChatGPT</a></li>
-                            <li><a href="https://claude.ai/" target="_blank" class="btn-premium btn-sub">Claude AI</a></li>
-                            <li><a href="https://hackerai.co/" target="_blank" class="btn-premium btn-sub">HackerAI</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="dropdown">
-                        <button class="btn-premium parent-btn" aria-haspopup="true">
-                            <span class="btn-content">
-                                <span class="btn-icon">📂</span>
-                                <span class="btn-text">GitHub</span>
-                            </span>
-                            <span class="btn-arrow">▶</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="https://github.com/" target="_blank" class="btn-premium btn-sub">Inicio</a></li>
-                            <li><a href="https://github.com/new" target="_blank" class="btn-premium btn-sub">Nuevo Repo</a></li>
-                        </ul>
-                    </div>
-
-                    <a href="https://vercel.com/" target="_blank" class="btn-premium">
-                        <span class="btn-content">
-                            <span class="btn-icon">🚀</span>
-                            <span class="btn-text">Vercel Deploy</span>
-                        </span>
-                        <span class="btn-arrow">▶</span>
-                    </a>
-                    
-                    <a href="https://www.youtube.com/" target="_blank" class="btn-premium">
-                        <span class="btn-content">
-                            <span class="btn-icon">📺</span>
-                            <span class="btn-text">YouTube</span>
-                        </span>
-                        <span class="btn-arrow">▶</span>
-                    </a>
-                </nav>
-            </div>
-
-            <div class="glass-card info-panel" data-tilt>
-                <div class="lang-selector">
-                    <button class="btn-premium btn-lang active" data-lang="es">ES</button>
-                    <button class="btn-premium btn-lang" data-lang="en">EN</button>
-                </div>
-                
-                <div id="text-target" class="text-stream">
-                    <p class="placeholder-txt">Selecciona idioma para guiarte en tu creación.</p>
-                </div>
-            </div>
-
-        </div>
-    </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- 1. Sistema de Partículas Avanzado ---
-            const initParticles = () => {
-                const container = document.getElementById('particles');
-                if(!container) return;
-                const particleCount = 60;
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const p = document.createElement('div');
-                    p.style.cssText = `
-                        position: absolute;
-                        width: ${Math.random() * 3}px;
-                        height: ${p.style.width};
-                        background: rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1});
-                        border-radius: 50%;
-                        top: ${Math.random() * 100}%;
-                        left: ${Math.random() * 100}%;
-                        pointer-events: none;
-                        box-shadow: 0 0 10px rgba(255,255,255,0.2);
-                    `;
-                    
-                    // Animación individual flotante
-                    p.animate([
-                        { transform: `translate(0, 0)`, opacity: p.style.opacity },
-                        { transform: `translate(${Math.random() * 50 - 25}px, ${Math.random() * -100}px)`, opacity: 0 }
-                    ], {
-                        duration: Math.random() * 10000 + 5000,
-                        iterations: Infinity,
-                        easing: 'linear',
-                        delay: Math.random() * -10000
-                    });
-                    
-                    container.appendChild(p);
-                }
-            };
+        const panel = document.getElementById('tilt-panel');
+        const cursor = document.getElementById('cursor');
+        const search = document.getElementById('main-search');
 
-            // --- 2. Cursor Personalizado con Inercia ---
-            const initCursor = () => {
-                const cursor = document.getElementById('custom-cursor');
-                const ring = cursor.querySelector('.cursor-ring');
-                const dot = cursor.querySelector('.cursor-dot');
-                
-                let mouseX = window.innerWidth / 2;
-                let mouseY = window.innerHeight / 2;
-                let ringX = mouseX;
-                let ringY = mouseY;
+        // 1. Efecto 3D Tilt
+        document.addEventListener('mousemove', (e) => {
+            // Mover cursor
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
 
-                document.addEventListener('mousemove', e => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                    // El punto sigue al ratón instantáneamente
-                    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-                });
-
-                // La circunferencia sigue al ratón con un retraso suave (lerp)
-                const render = () => {
-                    ringX += (mouseX - ringX) * 0.15;
-                    ringY += (mouseY - ringY) * 0.15;
-                    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-                    requestAnimationFrame(render);
-                };
-                render();
-
-                // Interacciones del cursor (Hover/Click)
-                const interactables = document.querySelectorAll('a, button, .parent-btn');
-                
-                interactables.forEach(el => {
-                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hovering'));
-                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hovering'));
-                });
-
-                document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
-                document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
-            };
-
-            // --- 3. Efecto 3D Tilt en Tarjetas ---
-            const initTilt = () => {
-                const cards = document.querySelectorAll('[data-tilt]');
-                
-                // Solo activar en escritorio (dispositivos con puntero fino)
-                if (window.matchMedia("(pointer: fine)").matches) {
-                    cards.forEach(card => {
-                        card.addEventListener('mousemove', e => {
-                            const rect = card.getBoundingClientRect();
-                            const x = e.clientX - rect.left;
-                            const y = e.clientY - rect.top;
-                            
-                            const xc = rect.width / 2;
-                            const yc = rect.height / 2;
-                            
-                            // Calcular rotación (máx 10 grados)
-                            const angleX = (yc - y) / 15;
-                            const angleY = (x - xc) / 15;
-                            
-                            card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
-                        });
-                        
-                        // Resetear al salir
-                        card.addEventListener('mouseleave', () => {
-                            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
-                        });
-                    });
-                }
-            };
-
-            // --- 4. Lógica de Menús Dropdown ---
-            const initDropdowns = () => {
-                const dropdowns = document.querySelectorAll('.dropdown');
-                
-                dropdowns.forEach(dd => {
-                    const btn = dd.querySelector('.parent-btn');
-                    
-                    btn.addEventListener('click', (e) => {
-                        e.preventDefault(); // Prevenir navegación si es un link
-                        
-                        // Cerrar otros dropdowns abiertos
-                        dropdowns.forEach(otherDd => {
-                            if(otherDd !== dd) otherDd.classList.remove('is-open');
-                        });
-                        
-                        // Alternar actual
-                        dd.classList.toggle('is-open');
-                    });
-                });
-                
-                // Cerrar al hacer click fuera
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.dropdown')) {
-                        dropdowns.forEach(dd => dd.classList.remove('is-open'));
-                    }
-                });
-            };
-
-            // --- 5. Cambiador de Idioma con Animación ---
-            const initLanguage = () => {
-                const langBtns = document.querySelectorAll('.btn-lang');
-                const target = document.getElementById('text-target');
-                
-                const content = {
-                    es: `<b>1</b> Pide a la IA tu estructura web.<br><b>2</b> Crea un repo en GitHub y sube tu index.html.<br><b>3</b> En Vercel, importa el repo y lanza el Deploy.<br><br>Casi magia.`,
-                    en: `<b>1</b> Ask AI for your web structure.<br><b>2</b> Create a GitHub repo and upload index.html.<br><b>3</b> On Vercel, import the repo and hit Deploy.<br><br>Pure magic.`
-                };
-                
-                langBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        if(btn.classList.contains('active')) return;
-                        
-                        const lang = btn.dataset.lang;
-                        
-                        // Actualizar botones
-                        langBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        
-                        // Animación de cambio de texto
-                        target.animate([
-                            { opacity: 1, transform: 'translateY(0)' },
-                            { opacity: 0, transform: 'translateY(10px)' }
-                        ], { duration: 200, easing: 'ease-in' }).onfinish = () => {
-                            target.innerHTML = content[lang];
-                            target.animate([
-                                { opacity: 0, transform: 'translateY(-10px)' },
-                                { opacity: 1, transform: 'translateY(0)' }
-                            ], { duration: 300, easing: 'ease-out' });
-                        };
-                    });
-                });
-            };
-
-            // --- Ejecutar Inicializaciones ---
-            initParticles();
-            initCursor();
-            initTilt();
-            initDropdowns();
-            initLanguage();
-            
-            // Forzar render del video de YouTube correctamente
-            setTimeout(() => {
-                const ifr = document.querySelector('.video-background iframe');
-                if(ifr) ifr.src = ifr.src; 
-            }, 1000);
+            // Rotación panel
+            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+            panel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
+
+        // 2. Lógica de Búsqueda Inteligente
+        search.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const val = search.value.toLowerCase();
+                if (val.includes('github')) window.open('https://github.com', '_blank');
+                else if (val.includes('chatgpt') || val.includes('gpt')) window.open('https://chatgpt.com', '_blank');
+                else if (val.includes('gemini')) window.open('https://gemini.google.com', '_blank');
+                else if (val.includes('vercel')) window.open('https://vercel.com', '_blank');
+                else window.open(`https://www.google.com/search?q=${val}`, '_blank');
+                
+                search.value = ''; // Limpiar
+            }
+        });
+
+        // Efecto click cursor
+        document.addEventListener('mousedown', () => cursor.style.transform = 'translate(-50%, -50%) scale(0.7)');
+        document.addEventListener('mouseup', () => cursor.style.transform = 'translate(-50%, -50%) scale(1)');
+
     </script>
 </body>
 </html>
