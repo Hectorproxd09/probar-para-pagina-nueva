@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Page Creation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400&display=swap" rel="stylesheet">
+</head>
+<body>
 
+    <div id="custom-cursor"></div>
+    <div class="ambient-glow"></div>
+
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+        </iframe>
+    </div>
+
+    <div class="overlay"></div>
+
+    <div class="main-container">
+        
+        <div class="glass-panel">
+            <h1>Page Creation</h1>
+            
+            <nav class="button-list">
+                <div class="dropdown">
+                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
+                    <div class="dropdown-content">
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+                    <div class="dropdown-content">
+                        <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
+                    </div>
+                </div>
+
+                <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
+                <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
+            </nav>
+        </div>
+
+        <div class="instruction-panel">
+            <div class="lang-container">
+                <button class="btn btn-lang" onclick="setLang('es')">Español</button>
+                <button class="btn btn-lang" onclick="setLang('en')">English</button>
+            </div>
+            <div id="text-target" class="instruction-content">
+                <p style="opacity: 0.5; text-align: center; font-size: 0.8rem; margin: 0;">Selecciona un idioma / Select language</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
