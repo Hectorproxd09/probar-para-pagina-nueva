@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Creation - Search</title>
+    <title>Page Creation</title>
     <style>
         /* Reset de estilos */
         * {
@@ -96,7 +96,7 @@
         }
 
         .glass-panel {
-            padding: 2.5rem;
+            padding: 3rem;
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(20px);
@@ -111,83 +111,69 @@
 
         h1 {
             color: #fff;
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 300;
             letter-spacing: 5px;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             text-transform: uppercase;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
-        /* --- ESTILOS BARRA DE BUSQUEDA --- */
-        .search-box {
+        /* --- ESTILOS BARRA DE BÚSQUEDA --- */
+        .search-container {
+            margin-bottom: 20px;
             position: relative;
-            margin-bottom: 2rem;
-            width: 100%;
         }
 
-        #search-input {
+        .search-bar {
             width: 100%;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
             border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
             color: white;
-            font-size: 0.9rem;
             outline: none;
-            transition: all 0.3s;
-        }
-
-        #search-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
         }
 
         .search-results {
             position: absolute;
-            top: 110%;
+            top: 100%;
             left: 0;
             width: 100%;
-            background: rgba(20, 20, 20, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 12px 12px;
+            z-index: 20;
             max-height: 200px;
             overflow-y: auto;
-            display: none; /* Se muestra por JS */
         }
 
         .search-item {
-            padding: 12px 20px;
-            color: #ddd;
+            padding: 10px;
+            color: white;
             text-decoration: none;
             display: block;
-            text-align: left;
-            font-size: 0.85rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .search-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: rgba(255,255,255,0.1);
         }
         /* ---------------------------------- */
 
         .button-list {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.3rem;
         }
 
         .btn {
             display: block;
-            padding: 14px;
+            padding: 16px;
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 400;
             letter-spacing: 1.5px;
             border: 1px solid rgba(255, 255, 255, 0.15);
@@ -206,16 +192,18 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
-        .dropdown { position: relative; }
+        .dropdown {
+            position: relative;
+        }
 
         .dropdown-content {
             position: absolute;
-            left: 105%;
+            left: 100%;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             padding-left: 15px;
             pointer-events: none;
             visibility: hidden;
@@ -223,13 +211,14 @@
         }
 
         .btn-sub {
-            width: 160px;
-            padding: 10px;
-            font-size: 0.85rem;
+            width: 170px;
+            padding: 11px;
+            font-size: 0.88rem;
             opacity: 0;
             transform: translateX(-10px);
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -241,33 +230,53 @@
         .dropdown:hover .btn-sub {
             opacity: 1;
             transform: translateX(0);
+            animation: floating 3.5s ease-in-out infinite;
+        }
+
+        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; animation-delay: 0s; }
+        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; animation-delay: 0.6s; }
+        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; animation-delay: 1.2s; }
+        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; animation-delay: 1.8s; }
+
+        @keyframes floating {
+            0% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-6px) translateX(3px); }
+            100% { transform: translateY(0px) translateX(0px); }
         }
 
         .instruction-panel {
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-radius: 22px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.5rem;
+            padding: 1.8rem;
             color: rgba(255, 255, 255, 0.9);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             transition: transform 0.1s ease;
         }
 
-        .lang-container { display: flex; gap: 10px; margin-bottom: 1rem; }
-        .btn-lang { flex: 1; padding: 6px; font-size: 0.75rem; text-transform: uppercase; }
+        .lang-container {
+            display: flex; gap: 12px; margin-bottom: 1.2rem;
+        }
+
+        .btn-lang { flex: 1; padding: 7px; font-size: 0.8rem; text-transform: uppercase; }
 
         .instruction-content {
             background: rgba(0, 0, 0, 0.3);
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            max-height: 140px;
+            padding: 1.2rem;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-height: 160px;
             overflow-y: auto;
+            white-space: pre-line;
             text-align: left;
         }
+
+        .instruction-content::-webkit-scrollbar { width: 4px; }
+        .instruction-content::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -276,30 +285,38 @@
     <div class="ambient-glow"></div>
 
     <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <div class="overlay"></div>
 
     <div class="main-container">
         <div class="glass-panel">
-            <h1>Explorar</h1>
-
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Buscar sitio (ej: ClaudeAI)..." autocomplete="off">
-                <div id="search-results" class="search-results"></div>
+            <h1>Page Creation</h1>
+            
+            <div class="search-container">
+                <input type="text" id="main-search" class="search-bar" placeholder="Buscar sitio..." autocomplete="off">
+                <div id="results-box" class="search-results"></div>
             </div>
 
             <nav class="button-list">
                 <div class="dropdown">
-                    <a href="#" class="btn">IA Modelos</a>
+                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        <a href="https://claude.ai/" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
                         <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
                     </div>
                 </div>
-                <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+
+                <div class="dropdown">
+                    <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+                    <div class="dropdown-content">
+                        <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
+                    </div>
+                </div>
+
                 <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
                 <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
             </nav>
@@ -311,65 +328,54 @@
                 <button class="btn btn-lang" onclick="setLang('en')">English</button>
             </div>
             <div id="text-target" class="instruction-content">
-                <p style="opacity: 0.5; text-align: center;">Selecciona idioma / Select language</p>
+                <p style="opacity: 0.5; text-align: center; font-size: 0.8rem;">Select language for tutorial</p>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. Lógica de Búsqueda
-        const searchInput = document.getElementById('search-input');
-        const searchResults = document.getElementById('search-results');
-
-        // Datos de búsqueda
-        const pages = [
-            { name: "ClaudeAI", url: "https://claude.ai/" },
-            { name: "Google Gemini", url: "https://gemini.google.com/" },
-            { name: "ChatGPT", url: "https://chatgpt.com/" },
+        // Lógica de Búsqueda
+        const searchInput = document.getElementById('main-search');
+        const resultsBox = document.getElementById('results-box');
+        
+        // Obtenemos los links de los botones actuales
+        const searchData = [
+            { name: "Google Gemini", url: "https://gemini.google.com/app?hl=es" },
             { name: "HackerAI", url: "https://hackerai.co/" },
+            { name: "ClaudeAI", url: "https://claude.ai/new" },
+            { name: "ChatGPT", url: "https://chatgpt.com/" },
             { name: "GitHub", url: "https://github.com/" },
+            { name: "Nuevo Repositorio", url: "https://github.com/new" },
             { name: "Vercel", url: "https://vercel.com/" },
             { name: "YouTube", url: "https://www.youtube.com/" }
         ];
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            searchResults.innerHTML = '';
-            
-            if (term.length > 0) {
-                const filtered = pages.filter(p => p.name.toLowerCase().includes(term));
-                
-                if (filtered.length > 0) {
-                    searchResults.style.display = 'block';
-                    filtered.forEach(page => {
-                        const item = document.createElement('a');
-                        item.href = page.url;
-                        item.target = "_blank";
-                        item.className = 'search-item';
-                        item.textContent = page.name;
-                        searchResults.appendChild(item);
-                    });
-                } else {
-                    searchResults.style.display = 'none';
-                }
-            } else {
-                searchResults.style.display = 'none';
+        searchInput.addEventListener('input', () => {
+            const value = searchInput.value.toLowerCase();
+            resultsBox.innerHTML = '';
+            if (value) {
+                const filtered = searchData.filter(item => item.name.toLowerCase().includes(value));
+                filtered.forEach(item => {
+                    const a = document.createElement('a');
+                    a.href = item.url;
+                    a.target = "_blank";
+                    a.className = 'search-item';
+                    a.textContent = item.name;
+                    resultsBox.appendChild(a);
+                });
+                updateCursorListeners();
             }
-            updateCursorListeners(); // Actualizar cursor para nuevos elementos
         });
 
-        // Cerrar resultados al hacer click fuera
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target)) searchResults.style.display = 'none';
-        });
-
-        // 2. Cursor personalizado
+        // Cursor
         const cursor = document.getElementById('custom-cursor');
+
         document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
+        // Actualizamos los listeners para los links dinámicos
         function updateCursorListeners() {
             const links = document.querySelectorAll('a, button, input');
             links.forEach(link => {
@@ -385,18 +391,34 @@
         }
         updateCursorListeners();
 
-        // 3. Efecto Parallax sutil
+        // Parallax - Efecto sutil
         const glassPanel = document.querySelector('.glass-panel');
+        const instructPanel = document.querySelector('.instruction-panel');
+
         document.addEventListener('mousemove', e => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 80;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 80;
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 70;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 70;
+
             glassPanel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            instructPanel.style.transform = `rotateY(${xAxis * 1.1}deg) rotateX(${yAxis * 1.1}deg)`;
         });
 
-        // 4. Traducciones
+        // Contenido
         const content = {
-            es: "Escribe en la barra de búsqueda el nombre de la herramienta que necesites. Si buscas 'ClaudeAI', aparecerá directamente el acceso a la web oficial de Anthropic.",
-            en: "Type the name of the tool you need in the search bar. If you search for 'ClaudeAI', the direct link to Anthropic's official website will appear."
+            es: `INSTRUCCIONES:
+            Comienza solicitando a una IA la creación de un archivo HTML utilizando un prompt.
+            Luego, crea un repositorio en GitHub. Dentro del repositorio, agrega un nuevo archivo llamado "index.html" y pega el código HTML generado.
+            Guarda los cambios en el repositorio para asegurarte de no perder el archivo.
+            Dirígete a Vercel y regístrate o inicia sesión utilizando tu cuenta de GitHub.
+            Una vez dentro, selecciona la opción "Add New Project" y elige el repositorio que creaste.
+            Finalmente, despliega el proyecto.`,
+            en: `INSTRUCTIONS:
+            Start by requesting an AI to create an HTML file using a prompt.
+            Then, create a repository on GitHub. Inside the repository, add a new file called "index.html" and paste the generated HTML code.
+            Save the changes to the repository to ensure you don't lose the file.
+            Go to Vercel and register or log in using your GitHub account.
+            Once logged in, select the "Add New Project" option and choose the repository you created.
+            Finally, expand the project.`
         };
 
         function setLang(lang) {
