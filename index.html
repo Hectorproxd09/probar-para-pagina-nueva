@@ -4,10 +4,202 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Creation</title>
-    <link rel="stylesheet" href="styles.css">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS INTEGRADO */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --accent-gradient: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            --glow-neon: 0 0 30px rgba(255, 107, 107, 0.4);
+        }
+
+        html {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            overflow: hidden;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            position: relative;
+            color: var(--text-primary);
+            cursor: none;
+        }
+
+        /* Cursor */
+        #custom-cursor {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .cursor-ring {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: all 0.2s ease;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: var(--glow-neon);
+        }
+
+        /* Backgrounds */
+        .video-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        .video-background iframe {
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: -2;
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.05), transparent);
+            z-index: -1;
+        }
+
+        /* Main Styles */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            gap: 20px;
+            perspective: 1000px;
+            padding: 20px;
+        }
+
+        .glass-panel, .instruction-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+        }
+
+        h1.title-gradient {
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .button-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.02);
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #ff6b6b;
+        }
+
+        /* Dropdown logic */
+        .dropdown { position: relative; }
+        .dropdown-content {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .dropdown:hover .dropdown-content { display: flex; }
+
+        .btn-sub { font-size: 0.85rem; padding: 8px; opacity: 0.8; }
+
+        /* Instructions */
+        .lang-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-lang { flex: 1; cursor: none; }
+        .btn-lang.active { background: #ff6b6b; border-color: #ff6b6b; }
+
+        .instruction-content {
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            white-space: pre-line;
+        }
+        
+        .placeholder-text { text-align: center; opacity: 0.5; }
+
+        @keyframes float {
+            from { transform: translateY(0); }
+            to { transform: translateY(-100vh); }
+        }
+    </style>
 </head>
 <body>
     <div id="custom-cursor">
@@ -19,7 +211,7 @@
     <div class="particles-container"></div>
 
     <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <div class="overlay"></div>
@@ -27,35 +219,35 @@
     <div class="main-container">
         <div class="glass-panel" data-tilt>
             <h1 class="title-gradient">Page Creation</h1>
-            <nav class="button-list" role="navigation">
+            <nav class="button-list">
                 <div class="dropdown" data-dropdown="ia">
-                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn" data-hover="IA Tools">
+                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">
                         <span class="btn-icon">🤖</span>
                         <span class="btn-text">IA</span>
                     </a>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub" data-hover="Gemini AI">Google Gemini</a>
-                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub" data-hover="HackerAI">HackerAI</a>
-                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub" data-hover="Claude AI">ClaudeAI</a>
-                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub" data-hover="ChatGPT">ChatGPT</a>
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
                     </div>
                 </div>
 
                 <div class="dropdown" data-dropdown="github">
-                    <a href="https://github.com/" target="_blank" class="btn" data-hover="GitHub Home">
+                    <a href="https://github.com/" target="_blank" class="btn">
                         <span class="btn-icon">📂</span>
                         <span class="btn-text">GitHub</span>
                     </a>
                     <div class="dropdown-content">
-                        <a href="https://github.com/new" target="_blank" class="btn btn-sub" data-hover="New Repo">Nuevo Repositorio</a>
+                        <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
                     </div>
                 </div>
 
-                <a href="https://vercel.com/" target="_blank" class="btn" data-hover="Deploy Fast">
+                <a href="https://vercel.com/" target="_blank" class="btn">
                     <span class="btn-icon">🚀</span>
                     <span class="btn-text">Vercel</span>
                 </a>
-                <a href="https://www.youtube.com/" target="_blank" class="btn" data-hover="Video Platform">
+                <a href="https://www.youtube.com/" target="_blank" class="btn">
                     <span class="btn-icon">📺</span>
                     <span class="btn-text">YouTube</span>
                 </a>
@@ -73,6 +265,68 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // JS INTEGRADO
+        const cursor = document.getElementById('custom-cursor');
+        const panels = document.querySelectorAll('[data-tilt]');
+        const textTarget = document.getElementById('text-target');
+        
+        // Cursor
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Hover efectos
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+        });
+
+        // Parallax simple
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.clientX) / 50;
+            const y = (window.innerHeight / 2 - e.clientY) / 50;
+            panels.forEach(p => {
+                p.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            });
+        });
+
+        // Partículas
+        const pContainer = document.querySelector('.particles-container');
+        for(let i=0; i<30; i++) {
+            const p = document.createElement('div');
+            p.style.cssText = `
+                position: fixed;
+                width: 2px; height: 2px;
+                background: white;
+                opacity: 0.3;
+                left: ${Math.random()*100}vw;
+                top: ${Math.random()*100}vh;
+                pointer-events: none;
+                animation: float ${10+Math.random()*10}s infinite linear;
+            `;
+            pContainer.appendChild(p);
+        }
+
+        // Idioma
+        const content = {
+            es: `🚀 INSTRUCCIONES:\n\n1️⃣ IA: Pide el código HTML.\n2️⃣ GitHub: Crea el repo y sube index.html.\n3️⃣ Vercel: Importa y haz Deploy.`,
+            en: `🚀 INSTRUCTIONS:\n\n1️⃣ AI: Ask for the HTML code.\n2️⃣ GitHub: Create repo and upload index.html.\n3️⃣ Vercel: Import and Deploy.`
+        };
+
+        document.querySelectorAll('.btn-lang').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                textTarget.innerText = content[lang];
+            });
+        });
+    </script>
 </body>
 </html>
