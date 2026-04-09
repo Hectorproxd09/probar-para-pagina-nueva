@@ -3,249 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Creator UI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Page Creation - Search</title>
     <style>
-        :root {
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --accent: #ff6b6b;
-            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            cursor: none;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: #000;
-            color: white;
-            height: 100vh;
             overflow: hidden;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
         }
 
-        /* --- FONDO DE VIDEO ORIGINAL --- */
-        .bg-video {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
-            filter: brightness(0.4) contrast(1.2);
+        #custom-cursor {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease, background 0.2s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
         }
-        .bg-video iframe {
+
+        .ambient-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 10%, rgba(220, 20, 60, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(139, 0, 0, 0.15) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+            animation: glowMove 15s ease infinite alternate;
+        }
+
+        @keyframes glowMove {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .video-background iframe {
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
-            position: absolute; top: 50%; left: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            pointer-events: none;
         }
 
         .overlay {
-            position: fixed; top: 0; left: 0;
+            position: fixed;
+            top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, #000 150%);
+            background: rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
 
-        /* --- BARRA DE BÚSQUEDA --- */
-        .search-box {
-            position: absolute; top: 40px;
-            width: 100%; max-width: 400px;
-            z-index: 100;
-        }
-        #main-search {
-            width: 100%;
-            padding: 15px 25px;
-            border-radius: 50px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--border);
-            color: white;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            text-align: center;
-        }
-        #main-search:focus {
-            background: rgba(255,255,255,0.15);
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+        .main-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 90%;
+            max-width: 420px;
+            align-items: center;
+            perspective: 1000px;
+            animation: containerAppear 1s ease-out;
         }
 
-        /* --- PANEL PRINCIPAL 3D --- */
+        @keyframes containerAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 40px;
+            padding: 2.5rem;
             width: 100%;
-            max-width: 380px;
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s ease;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-            position: relative;
         }
 
         h1 {
-            font-size: 1.8rem; font-weight: 800;
-            margin-bottom: 30px; text-align: center;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            transform: translateZ(50px);
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
-        /* --- LISTA DE BOTONES Y DESPLIEGUE LATERAL --- */
-        .nav-menu { list-style: none; transform: translateZ(30px); }
-
-        .nav-item { position: relative; margin-bottom: 12px; }
-
-        .btn-main {
+        /* --- ESTILOS BARRA DE BUSQUEDA --- */
+        .search-box {
+            position: relative;
+            margin-bottom: 2rem;
             width: 100%;
-            padding: 16px 25px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 15px;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             color: white;
-            text-decoration: none;
-            display: flex; justify-content: space-between;
-            transition: 0.3s;
-            font-weight: 500;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s;
         }
 
-        .btn-main:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--accent);
-            transform: scale(1.02);
+        #search-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* --- DESPLIEGUE A LA DERECHA (FLYOUT) --- */
-        .side-menu {
+        .search-results {
             position: absolute;
-            left: 105%; top: 0;
-            display: none;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none; /* Se muestra por JS */
+        }
+
+        .search-item {
+            padding: 12px 20px;
+            color: #ddd;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .search-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        /* ---------------------------------- */
+
+        .button-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: block;
+            padding: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.01);
+            position: relative;
+            z-index: 5;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transform: scale(1.03) translateZ(20px);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown { position: relative; }
+
+        .dropdown-content {
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
             flex-direction: column;
             gap: 10px;
-            width: 200px;
+            padding-left: 15px;
+            pointer-events: none;
+            visibility: hidden;
             z-index: 10;
         }
 
-        .nav-item:hover .side-menu { display: flex; }
-
         .btn-sub {
-            padding: 12px 18px;
-            background: rgba(20, 20, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
+            width: 160px;
+            padding: 10px;
             font-size: 0.85rem;
-            animation: float 3s ease-in-out infinite; /* Animación flotante */
+            opacity: 0;
+            transform: translateX(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .btn-sub:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateX(5px);
+        .dropdown:hover .dropdown-content {
+            pointer-events: auto;
+            visibility: visible;
         }
 
-        /* Delays para la flotación */
-        .btn-sub:nth-child(2) { animation-delay: 0.5s; }
-        .btn-sub:nth-child(3) { animation-delay: 1s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+        .dropdown:hover .btn-sub {
+            opacity: 1;
+            transform: translateX(0);
         }
 
-        /* --- CURSOR --- */
-        #cursor {
-            position: fixed; width: 20px; height: 20px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            pointer-events: none; z-index: 9999;
-            transition: transform 0.1s;
-            transform: translate(-50%, -50%);
+        .instruction-panel {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px);
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease;
         }
 
+        .lang-container { display: flex; gap: 10px; margin-bottom: 1rem; }
+        .btn-lang { flex: 1; padding: 6px; font-size: 0.75rem; text-transform: uppercase; }
+
+        .instruction-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-height: 140px;
+            overflow-y: auto;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
+    <div id="custom-cursor"></div>
+    <div class="ambient-glow"></div>
 
-    <div class="bg-video">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0" frameborder="0"></iframe>
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
+
     <div class="overlay"></div>
 
-    <div class="search-box">
-        <input type="text" id="main-search" placeholder="Buscar GitHub, ChatGPT, Gemini...">
-    </div>
+    <div class="main-container">
+        <div class="glass-panel">
+            <h1>Explorar</h1>
 
-    <div class="glass-panel" id="tilt-panel">
-        <h1>Page Creation</h1>
-        
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="#" class="btn-main">IA Tools <span>→</span></a>
-                <div class="side-menu">
-                    <a href="https://chatgpt.com" target="_blank" class="btn-sub">ChatGPT</a>
-                    <a href="https://gemini.google.com" target="_blank" class="btn-sub">Google Gemini</a>
-                    <a href="https://claude.ai" target="_blank" class="btn-sub">Claude AI</a>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Buscar sitio (ej: ClaudeAI)..." autocomplete="off">
+                <div id="search-results" class="search-results"></div>
+            </div>
+
+            <nav class="button-list">
+                <div class="dropdown">
+                    <a href="#" class="btn">IA Modelos</a>
+                    <div class="dropdown-content">
+                        <a href="https://gemini.google.com/" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://claude.ai/" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                    </div>
                 </div>
-            </li>
+                <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+                <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
+                <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
+            </nav>
+        </div>
 
-            <li class="nav-item">
-                <a href="#" class="btn-main">GitHub <span>→</span></a>
-                <div class="side-menu">
-                    <a href="https://github.com" target="_blank" class="btn-sub">GitHub Home</a>
-                    <a href="https://github.com/new" target="_blank" class="btn-sub">New Repo</a>
-                </div>
-            </li>
-
-            <li class="nav-item">
-                <a href="https://vercel.com" target="_blank" class="btn-main">Vercel Deploy <span>🚀</span></a>
-            </li>
-        </ul>
+        <div class="instruction-panel">
+            <div class="lang-container">
+                <button class="btn btn-lang" onclick="setLang('es')">Español</button>
+                <button class="btn btn-lang" onclick="setLang('en')">English</button>
+            </div>
+            <div id="text-target" class="instruction-content">
+                <p style="opacity: 0.5; text-align: center;">Selecciona idioma / Select language</p>
+            </div>
+        </div>
     </div>
 
     <script>
-        const panel = document.getElementById('tilt-panel');
-        const cursor = document.getElementById('cursor');
-        const search = document.getElementById('main-search');
+        // 1. Lógica de Búsqueda
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
 
-        // 1. Efecto 3D Tilt
-        document.addEventListener('mousemove', (e) => {
-            // Mover cursor
+        // Datos de búsqueda
+        const pages = [
+            { name: "ClaudeAI", url: "https://claude.ai/" },
+            { name: "Google Gemini", url: "https://gemini.google.com/" },
+            { name: "ChatGPT", url: "https://chatgpt.com/" },
+            { name: "HackerAI", url: "https://hackerai.co/" },
+            { name: "GitHub", url: "https://github.com/" },
+            { name: "Vercel", url: "https://vercel.com/" },
+            { name: "YouTube", url: "https://www.youtube.com/" }
+        ];
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            searchResults.innerHTML = '';
+            
+            if (term.length > 0) {
+                const filtered = pages.filter(p => p.name.toLowerCase().includes(term));
+                
+                if (filtered.length > 0) {
+                    searchResults.style.display = 'block';
+                    filtered.forEach(page => {
+                        const item = document.createElement('a');
+                        item.href = page.url;
+                        item.target = "_blank";
+                        item.className = 'search-item';
+                        item.textContent = page.name;
+                        searchResults.appendChild(item);
+                    });
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            } else {
+                searchResults.style.display = 'none';
+            }
+            updateCursorListeners(); // Actualizar cursor para nuevos elementos
+        });
+
+        // Cerrar resultados al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target)) searchResults.style.display = 'none';
+        });
+
+        // 2. Cursor personalizado
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-
-            // Rotación panel
-            const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
-            panel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        // 2. Lógica de Búsqueda Inteligente
-        search.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const val = search.value.toLowerCase();
-                if (val.includes('github')) window.open('https://github.com', '_blank');
-                else if (val.includes('chatgpt') || val.includes('gpt')) window.open('https://chatgpt.com', '_blank');
-                else if (val.includes('gemini')) window.open('https://gemini.google.com', '_blank');
-                else if (val.includes('vercel')) window.open('https://vercel.com', '_blank');
-                else window.open(`https://www.google.com/search?q=${val}`, '_blank');
-                
-                search.value = ''; // Limpiar
-            }
+        function updateCursorListeners() {
+            const links = document.querySelectorAll('a, button, input');
+            links.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursor.style.background = 'rgba(255, 255, 255, 0.9)';
+                });
+                link.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursor.style.background = 'rgba(255, 255, 255, 0.6)';
+                });
+            });
+        }
+        updateCursorListeners();
+
+        // 3. Efecto Parallax sutil
+        const glassPanel = document.querySelector('.glass-panel');
+        document.addEventListener('mousemove', e => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 80;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 80;
+            glassPanel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
 
-        // Efecto click cursor
-        document.addEventListener('mousedown', () => cursor.style.transform = 'translate(-50%, -50%) scale(0.7)');
-        document.addEventListener('mouseup', () => cursor.style.transform = 'translate(-50%, -50%) scale(1)');
+        // 4. Traducciones
+        const content = {
+            es: "Escribe en la barra de búsqueda el nombre de la herramienta que necesites. Si buscas 'ClaudeAI', aparecerá directamente el acceso a la web oficial de Anthropic.",
+            en: "Type the name of the tool you need in the search bar. If you search for 'ClaudeAI', the direct link to Anthropic's official website will appear."
+        };
 
+        function setLang(lang) {
+            document.getElementById('text-target').innerText = content[lang];
+        }
     </script>
 </body>
 </html>
