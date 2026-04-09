@@ -3,329 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Creation</title>
+    <title>Page Creation Ultra</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS INTEGRADO */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* =========================================
+           CSS VARIABLES & RESET
+           ========================================= */
         :root {
-            --bg-primary: #0a0a0a;
-            --glass-bg: rgba(255, 255, 255, 0.06);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --text-primary: rgba(255, 255, 255, 0.95);
-            --text-secondary: rgba(255, 255, 255, 0.75);
-            --accent-gradient: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
-            --glow-neon: 0 0 30px rgba(255, 107, 107, 0.4);
+            --bg-dark: #030303;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            
+            /* Paleta de colores vibrantes */
+            --c1: #ff6b6b;
+            --c2: #4ecdc4;
+            --c3: #ffe66d;
+            --c4: #a55eea;
+            
+            --gradient-vibe: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c4) 100%);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        html {
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            outline: none; -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
             font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh; width: 100vw;
             overflow: hidden;
-            min-height: 100vh;
-            background: var(--bg-primary);
-            position: relative;
-            color: var(--text-primary);
-            cursor: none;
+            cursor: none; /* Ocultar cursor real */
         }
 
-        /* Cursor */
-        #custom-cursor {
-            position: fixed;
-            width: 24px;
-            height: 24px;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
+        /* =========================================
+           FONDO Y EFECTOS ATMOSFÉRICOS
+           ========================================= */
+        .scenery {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -5; pointer-events: none;
         }
 
-        .cursor-ring {
-            width: 24px;
-            height: 24px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 50%;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0.8);
-            transition: all 0.2s ease;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: var(--glow-neon);
-        }
-
-        /* Backgrounds */
+        /* Video de fondo con filtro */
         .video-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -3;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            filter: grayscale(100%) brightness(30%) contrast(120%);
+            opacity: 0.8;
         }
 
         .video-background iframe {
-            width: 100vw; height: 56.25vw;
+            width: 100vw; height: 56.25vw; /* 16:9 ratio */
             min-height: 100vh; min-width: 177.77vh;
-            position: absolute;
-            top: 50%; left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
+        /* Capa de degradado "Aurora" animada */
+        .aurora-layer {
+            position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(165, 94, 234, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.15) 0%, transparent 40%);
+            z-index: -4;
+            animation: auroraLoop 20s ease infinite alternate;
+        }
+
+        @keyframes auroraLoop {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.5; }
+            50% { transform: scale(1.1) translate(1%, -1%); opacity: 1; }
+            100% { transform: scale(1) translate(-1%, 1%); opacity: 0.5; }
+        }
+
+        /* Viñeta para centrar la atención */
+        .vignette {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 140%);
+            z-index: -3;
+        }
+
+        .particles-container {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: -2;
         }
 
-        .ambient-glow {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 107, 0.05), transparent);
-            z-index: -1;
+        /* =========================================
+           CURSOR PERSONALIZADO (SMOOTH)
+           ========================================= */
+        #custom-cursor {
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 10000;
+            mix-blend-mode: difference; /* Efecto visual al pasar sobre texto */
         }
 
-        /* Main Styles */
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            gap: 20px;
-            perspective: 1000px;
-            padding: 20px;
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute; transform: translate(-50%, -50%);
         }
 
-        .glass-panel, .instruction-panel {
+        .cursor-ring {
+            width: 40px; height: 40px;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: absolute; transform: translate(-50%, -50%);
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), border 0.3s;
+        }
+
+        /* Estados del cursor */
+        body.cursor-hovering .cursor-ring {
+            width: 60px; height: 60px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body.cursor-clicking .cursor-ring {
+            width: 30px; height: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* =========================================
+           LAYOUT PRINCIPAL
+           ========================================= */
+        .main-wrapper {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 100vh; padding: 40px 20px;
+            perspective: 1200px; /* Para efecto 3D tilt */
+        }
+
+        .container-limited {
+            width: 100%; max-width: 480px;
+            display: flex; flex-direction: column; gap: 25px;
+        }
+
+        /* =========================================
+           ESTILOS GLASSMORPHISM
+           ========================================= */
+        .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease;
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d; /* Importante para sub-elementos 3D */
+            
+            /* Animación de entrada */
+            opacity: 0; animation: cardEntry 1s var(--ease-out-expo) forwards;
         }
 
-        h1.title-gradient {
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .glass-card:nth-child(2) { animation-delay: 0.2s; }
+
+        @keyframes cardEntry {
+            from { opacity: 0; transform: translateY(40px) rotateX(-10deg); }
+            to { opacity: 1; transform: translateY(0) rotateX(0deg); }
         }
 
-        .button-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        /* =========================================
+           PANEL PRINCIPAL (BOTONES)
+           ========================================= */
+        .hero-panel { padding: 45px 35px; text-align: center; }
+
+        /* Título con gradiente animado */
+        .main-title {
+            font-size: 2rem; font-weight: 800;
+            letter-spacing: -1px; margin-bottom: 35px;
+            background: linear-gradient(90deg, var(--c1), var(--c2), var(--c4), var(--c1));
+            background-size: 300% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: gradientTitle 6s linear infinite;
+            transform: translateZ(30px); /* Efecto profundidad */
         }
 
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 12px;
+        @keyframes gradientTitle {
+            to { background-position: 300% center; }
+        }
+
+        .nav-list {
+            display: flex; flex-direction: column; gap: 16px;
+            transform: translateZ(15px);
+        }
+
+        /* =========================================
+           BOTONES PREMIUM FX
+           ========================================= */
+        .btn-premium {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; border-radius: 16px;
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.02);
-            color: white;
-            text-decoration: none;
-            transition: 0.3s;
+            color: var(--text-main); text-decoration: none;
+            font-weight: 500; font-size: 0.95rem;
+            transition: all 0.4s var(--ease-out-expo);
+            position: relative; overflow: hidden; /* Para efecto shine */
         }
 
-        .btn:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: #ff6b6b;
+        .btn-premium:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px) translateZ(10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        /* Dropdown logic */
-        .dropdown { position: relative; }
-        .dropdown-content {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-            padding-left: 20px;
+        /* Efecto Shine al hacer hover */
+        .btn-premium::after {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: 0.5s;
         }
-        .dropdown:hover .dropdown-content { display: flex; }
 
-        .btn-sub { font-size: 0.85rem; padding: 8px; opacity: 0.8; }
+        .btn-premium:hover::after { left: 100%; }
 
-        /* Instructions */
-        .lang-container { display: flex; gap: 10px; margin-bottom: 20px; }
-        .btn-lang { flex: 1; cursor: none; }
-        .btn-lang.active { background: #ff6b6b; border-color: #ff6b6b; }
-
-        .instruction-content {
-            text-align: left;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            white-space: pre-line;
-        }
+        .btn-content { display: flex; align-items: center; gap: 14px; }
+        .btn-icon { font-size: 1.2rem; opacity: 0.9; }
         
-        .placeholder-text { text-align: center; opacity: 0.5; }
-
-        @keyframes float {
-            from { transform: translateY(0); }
-            to { transform: translateY(-100vh); }
+        /* Flecha indicadora animada */
+        .btn-arrow {
+            font-size: 0.8rem; opacity: 0.5;
+            transition: transform 0.3s var(--ease-out-back), opacity 0.3s;
         }
+
+        .btn-premium:hover .btn-arrow {
+            opacity: 1; transform: translateX(4px);
+            color: var(--c2);
+        }
+
+        /* =========================================
+           DROPDOWN ANIMADO
+           ========================================= */
+        .dropdown { position: relative; }
+
+        .dropdown-menu {
+            max-height: 0; overflow: hidden; /* Oculto por defecto */
+            display: flex; flex-direction: column; gap: 8px;
+            padding: 0 10px; margin-top: 0;
+            list-style: none;
+            transition: max-height 0.5s var(--ease-out-expo), margin 0.5s var(--ease-out-expo), padding 0.5s var(--ease-out-expo);
+        }
+
+        /* Estado abierto (activado por JS) */
+        .dropdown.is-open .dropdown-menu {
+            max-height: 300px; /* Suficiente para el contenido */
+            margin-top: 12px; padding: 10px;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* Rotar flecha del botón padre */
+        .dropdown.is-open .parent-btn .btn-arrow {
+            transform: rotate(90deg); opacity: 1; color: var(--c1);
+        }
+
+        /* Items del submenú con animación staggered */
+        .dropdown-menu li {
+            transform: translateY(-15px); opacity: 0;
+            transition: transform 0.4s var(--ease-out-back), opacity 0.4s;
+        }
+
+        .dropdown.is-open .dropdown-menu li {
+            transform: translateY(0); opacity: 1;
+        }
+
+        /* Delays para efecto cascada (hasta 4 items) */
+        .dropdown.is-open .dropdown-menu li:nth-child(1) { transition-delay: 0.05s; }
+        .dropdown.is-open .dropdown-menu li:nth-child(2) { transition-delay: 0.10s; }
+        .dropdown.is-open .dropdown-menu li:nth-child(3) { transition-delay: 0.15s; }
+        .dropdown.is-open .dropdown-menu li:nth-child(4) { transition-delay: 0.20s; }
+
+        .btn-sub {
+            padding: 12px 18px; font-size: 0.85rem;
+            border-radius: 10px; background: rgba(0, 0, 0, 0.15);
+            border-color: transparent; color: var(--text-muted);
+        }
+
+        .btn-sub:hover {
+            color: var(--text-main); background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* =========================================
+           PANEL INSTRUCCIONES
+           ========================================= */
+        .info-panel { padding: 30px; }
+
+        .lang-selector {
+            display: flex; gap: 10px; margin-bottom: 25px;
+            transform: translateZ(10px);
+        }
+
+        .btn-lang {
+            flex: 1; justify-content: center;
+            padding: 10px; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-muted);
+        }
+
+        .btn-lang.active {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.02);
+        }
+
+        /* Indicador activo animado */
+        .btn-lang::before {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            width: 0; height: 2px; background: var(--gradient-vibe);
+            transform: translateX(-50%); transition: width 0.3s;
+        }
+
+        .btn-lang.active::before { width: 40%; }
+
+        /* Contenedor de texto con scrollbar oculto */
+        .text-stream {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px; border-radius: 16px;
+            font-size: 0.9rem; line-height: 1.7;
+            color: var(--text-muted);
+            max-height: 220px; overflow-y: auto;
+            transform: translateZ(5px);
+            position: relative;
+        }
+
+        /* Estilo para los números resaltados */
+        .text-stream b {
+            color: var(--c2); font-weight: 600;
+            background: rgba(78, 205, 196, 0.1);
+            padding: 1px 6px; border-radius: 4px; margin-right: 3px;
+        }
+
+        .placeholder-txt { text-align: center; opacity: 0.5; padding: 20px 0; }
+
+        /* Ocultar scrollbar pero mantener funcionalidad */
+        .text-stream { -ms-overflow-style: none; scrollbar-width: none; }
+        .text-stream::-webkit-scrollbar { display: none; }
+
     </style>
 </head>
 <body>
+
+    <div class="scenery">
+        <div class="video-background">
+            <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&wmode=transparent" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        </div>
+        <div class="aurora-layer"></div>
+        <div class="vignette"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+
     <div id="custom-cursor">
         <div class="cursor-ring"></div>
         <div class="cursor-dot"></div>
     </div>
-    
-    <div class="ambient-glow"></div>
-    <div class="particles-container"></div>
 
-    <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-
-    <div class="overlay"></div>
-
-    <div class="main-container">
-        <div class="glass-panel" data-tilt>
-            <h1 class="title-gradient">Page Creation</h1>
-            <nav class="button-list">
-                <div class="dropdown" data-dropdown="ia">
-                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">
-                        <span class="btn-icon">🤖</span>
-                        <span class="btn-text">IA</span>
-                    </a>
-                    <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
-                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
-                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+    <main class="main-wrapper">
+        <div class="container-limited">
+            
+            <div class="glass-card hero-panel" data-tilt>
+                <h1 class="main-title">Page Creation</h1>
+                
+                <nav class="nav-list">
+                    
+                    <div class="dropdown">
+                        <button class="btn-premium parent-btn" aria-haspopup="true">
+                            <span class="btn-content">
+                                <span class="btn-icon">🤖</span>
+                                <span class="btn-text">IA Tools</span>
+                            </span>
+                            <span class="btn-arrow">▶</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://gemini.google.com/" target="_blank" class="btn-premium btn-sub">Google Gemini</a></li>
+                            <li><a href="https://chatgpt.com/" target="_blank" class="btn-premium btn-sub">ChatGPT</a></li>
+                            <li><a href="https://claude.ai/" target="_blank" class="btn-premium btn-sub">Claude AI</a></li>
+                            <li><a href="https://hackerai.co/" target="_blank" class="btn-premium btn-sub">HackerAI</a></li>
+                        </ul>
                     </div>
-                </div>
 
-                <div class="dropdown" data-dropdown="github">
-                    <a href="https://github.com/" target="_blank" class="btn">
-                        <span class="btn-icon">📂</span>
-                        <span class="btn-text">GitHub</span>
-                    </a>
-                    <div class="dropdown-content">
-                        <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
+                    <div class="dropdown">
+                        <button class="btn-premium parent-btn" aria-haspopup="true">
+                            <span class="btn-content">
+                                <span class="btn-icon">📂</span>
+                                <span class="btn-text">GitHub</span>
+                            </span>
+                            <span class="btn-arrow">▶</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="https://github.com/" target="_blank" class="btn-premium btn-sub">Inicio</a></li>
+                            <li><a href="https://github.com/new" target="_blank" class="btn-premium btn-sub">Nuevo Repo</a></li>
+                        </ul>
                     </div>
+
+                    <a href="https://vercel.com/" target="_blank" class="btn-premium">
+                        <span class="btn-content">
+                            <span class="btn-icon">🚀</span>
+                            <span class="btn-text">Vercel Deploy</span>
+                        </span>
+                        <span class="btn-arrow">▶</span>
+                    </a>
+                    
+                    <a href="https://www.youtube.com/" target="_blank" class="btn-premium">
+                        <span class="btn-content">
+                            <span class="btn-icon">📺</span>
+                            <span class="btn-text">YouTube</span>
+                        </span>
+                        <span class="btn-arrow">▶</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="glass-card info-panel" data-tilt>
+                <div class="lang-selector">
+                    <button class="btn-premium btn-lang active" data-lang="es">ES</button>
+                    <button class="btn-premium btn-lang" data-lang="en">EN</button>
                 </div>
-
-                <a href="https://vercel.com/" target="_blank" class="btn">
-                    <span class="btn-icon">🚀</span>
-                    <span class="btn-text">Vercel</span>
-                </a>
-                <a href="https://www.youtube.com/" target="_blank" class="btn">
-                    <span class="btn-icon">📺</span>
-                    <span class="btn-text">YouTube</span>
-                </a>
-            </nav>
-        </div>
-
-        <div class="instruction-panel" data-tilt>
-            <div class="lang-container">
-                <button class="btn btn-lang active" data-lang="es">Español</button>
-                <button class="btn btn-lang" data-lang="en">English</button>
+                
+                <div id="text-target" class="text-stream">
+                    <p class="placeholder-txt">Selecciona idioma para guiarte en tu creación.</p>
+                </div>
             </div>
-            <div id="text-target" class="instruction-content">
-                <p class="placeholder-text">Selecciona un idioma para ver el tutorial</p>
-            </div>
+
         </div>
-    </div>
+    </main>
 
     <script>
-        // JS INTEGRADO
-        const cursor = document.getElementById('custom-cursor');
-        const panels = document.querySelectorAll('[data-tilt]');
-        const textTarget = document.getElementById('text-target');
-        
-        // Cursor
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Sistema de Partículas Avanzado ---
+            const initParticles = () => {
+                const container = document.getElementById('particles');
+                if(!container) return;
+                const particleCount = 60;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const p = document.createElement('div');
+                    p.style.cssText = `
+                        position: absolute;
+                        width: ${Math.random() * 3}px;
+                        height: ${p.style.width};
+                        background: rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1});
+                        border-radius: 50%;
+                        top: ${Math.random() * 100}%;
+                        left: ${Math.random() * 100}%;
+                        pointer-events: none;
+                        box-shadow: 0 0 10px rgba(255,255,255,0.2);
+                    `;
+                    
+                    // Animación individual flotante
+                    p.animate([
+                        { transform: `translate(0, 0)`, opacity: p.style.opacity },
+                        { transform: `translate(${Math.random() * 50 - 25}px, ${Math.random() * -100}px)`, opacity: 0 }
+                    ], {
+                        duration: Math.random() * 10000 + 5000,
+                        iterations: Infinity,
+                        easing: 'linear',
+                        delay: Math.random() * -10000
+                    });
+                    
+                    container.appendChild(p);
+                }
+            };
 
-        // Hover efectos
-        document.querySelectorAll('a, button').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-            });
-        });
+            // --- 2. Cursor Personalizado con Inercia ---
+            const initCursor = () => {
+                const cursor = document.getElementById('custom-cursor');
+                const ring = cursor.querySelector('.cursor-ring');
+                const dot = cursor.querySelector('.cursor-dot');
+                
+                let mouseX = window.innerWidth / 2;
+                let mouseY = window.innerHeight / 2;
+                let ringX = mouseX;
+                let ringY = mouseY;
 
-        // Parallax simple
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.clientX) / 50;
-            const y = (window.innerHeight / 2 - e.clientY) / 50;
-            panels.forEach(p => {
-                p.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-            });
-        });
+                document.addEventListener('mousemove', e => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    // El punto sigue al ratón instantáneamente
+                    dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+                });
 
-        // Partículas
-        const pContainer = document.querySelector('.particles-container');
-        for(let i=0; i<30; i++) {
-            const p = document.createElement('div');
-            p.style.cssText = `
-                position: fixed;
-                width: 2px; height: 2px;
-                background: white;
-                opacity: 0.3;
-                left: ${Math.random()*100}vw;
-                top: ${Math.random()*100}vh;
-                pointer-events: none;
-                animation: float ${10+Math.random()*10}s infinite linear;
-            `;
-            pContainer.appendChild(p);
-        }
+                // La circunferencia sigue al ratón con un retraso suave (lerp)
+                const render = () => {
+                    ringX += (mouseX - ringX) * 0.15;
+                    ringY += (mouseY - ringY) * 0.15;
+                    ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
+                    requestAnimationFrame(render);
+                };
+                render();
 
-        // Idioma
-        const content = {
-            es: `🚀 INSTRUCCIONES:\n\n1️⃣ IA: Pide el código HTML.\n2️⃣ GitHub: Crea el repo y sube index.html.\n3️⃣ Vercel: Importa y haz Deploy.`,
-            en: `🚀 INSTRUCTIONS:\n\n1️⃣ AI: Ask for the HTML code.\n2️⃣ GitHub: Create repo and upload index.html.\n3️⃣ Vercel: Import and Deploy.`
-        };
+                // Interacciones del cursor (Hover/Click)
+                const interactables = document.querySelectorAll('a, button, .parent-btn');
+                
+                interactables.forEach(el => {
+                    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hovering'));
+                    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hovering'));
+                });
 
-        document.querySelectorAll('.btn-lang').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.dataset.lang;
-                document.querySelectorAll('.btn-lang').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                textTarget.innerText = content[lang];
-            });
+                document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
+                document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
+            };
+
+            // --- 3. Efecto 3D Tilt en Tarjetas ---
+            const initTilt = () => {
+                const cards = document.querySelectorAll('[data-tilt]');
+                
+                // Solo activar en escritorio (dispositivos con puntero fino)
+                if (window.matchMedia("(pointer: fine)").matches) {
+                    cards.forEach(card => {
+                        card.addEventListener('mousemove', e => {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            
+                            const xc = rect.width / 2;
+                            const yc = rect.height / 2;
+                            
+                            // Calcular rotación (máx 10 grados)
+                            const angleX = (yc - y) / 15;
+                            const angleY = (x - xc) / 15;
+                            
+                            card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+                        });
+                        
+                        // Resetear al salir
+                        card.addEventListener('mouseleave', () => {
+                            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                        });
+                    });
+                }
+            };
+
+            // --- 4. Lógica de Menús Dropdown ---
+            const initDropdowns = () => {
+                const dropdowns = document.querySelectorAll('.dropdown');
+                
+                dropdowns.forEach(dd => {
+                    const btn = dd.querySelector('.parent-btn');
+                    
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault(); // Prevenir navegación si es un link
+                        
+                        // Cerrar otros dropdowns abiertos
+                        dropdowns.forEach(otherDd => {
+                            if(otherDd !== dd) otherDd.classList.remove('is-open');
+                        });
+                        
+                        // Alternar actual
+                        dd.classList.toggle('is-open');
+                    });
+                });
+                
+                // Cerrar al hacer click fuera
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.dropdown')) {
+                        dropdowns.forEach(dd => dd.classList.remove('is-open'));
+                    }
+                });
+            };
+
+            // --- 5. Cambiador de Idioma con Animación ---
+            const initLanguage = () => {
+                const langBtns = document.querySelectorAll('.btn-lang');
+                const target = document.getElementById('text-target');
+                
+                const content = {
+                    es: `<b>1</b> Pide a la IA tu estructura web.<br><b>2</b> Crea un repo en GitHub y sube tu index.html.<br><b>3</b> En Vercel, importa el repo y lanza el Deploy.<br><br>Casi magia.`,
+                    en: `<b>1</b> Ask AI for your web structure.<br><b>2</b> Create a GitHub repo and upload index.html.<br><b>3</b> On Vercel, import the repo and hit Deploy.<br><br>Pure magic.`
+                };
+                
+                langBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if(btn.classList.contains('active')) return;
+                        
+                        const lang = btn.dataset.lang;
+                        
+                        // Actualizar botones
+                        langBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        
+                        // Animación de cambio de texto
+                        target.animate([
+                            { opacity: 1, transform: 'translateY(0)' },
+                            { opacity: 0, transform: 'translateY(10px)' }
+                        ], { duration: 200, easing: 'ease-in' }).onfinish = () => {
+                            target.innerHTML = content[lang];
+                            target.animate([
+                                { opacity: 0, transform: 'translateY(-10px)' },
+                                { opacity: 1, transform: 'translateY(0)' }
+                            ], { duration: 300, easing: 'ease-out' });
+                        };
+                    });
+                });
+            };
+
+            // --- Ejecutar Inicializaciones ---
+            initParticles();
+            initCursor();
+            initTilt();
+            initDropdowns();
+            initLanguage();
+            
+            // Forzar render del video de YouTube correctamente
+            setTimeout(() => {
+                const ifr = document.querySelector('.video-background iframe');
+                if(ifr) ifr.src = ifr.src; 
+            }, 1000);
         });
     </script>
 </body>
