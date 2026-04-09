@@ -13,14 +13,15 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Solo ocultar cursor en dispositivos que tengan mouse */
+        /* En PC ocultamos el cursor del sistema solo en el fondo, 
+           pero lo mantenemos en botones para que sepas qué seleccionas */
         @media (pointer: fine) {
-            * { cursor: none; }
+            body { cursor: none; }
+            a, button, .btn { cursor: pointer !important; }
             #custom-cursor { display: block; }
         }
 
         body {
-            /* Permitir scroll si el contenido es mayor al alto en móviles */
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
@@ -176,9 +177,9 @@
             z-index: 10;
         }
 
-        /* Ajuste para móviles: Dropdown hacia abajo */
+        /* Móvil */
         @media (max-width: 768px) {
-            body { overflow-y: auto; align-items: flex-start; }
+            body { align-items: flex-start; }
             .dropdown-content {
                 position: static;
                 transform: none;
@@ -187,14 +188,10 @@
                 max-height: 0;
                 overflow: hidden;
                 padding-left: 0;
-                transition: max-height 0.3s ease, margin 0.3s ease;
+                transition: max-height 0.3s ease;
             }
-            .dropdown:hover .dropdown-content {
-                max-height: 500px;
-                margin-top: 10px;
-            }
-            .btn-sub { width: 100% !important; opacity: 1 !important; transform: none !important; animation: none !important; }
-            h1 { font-size: 1.4rem; letter-spacing: 3px; }
+            .dropdown:hover .dropdown-content { max-height: 500px; margin-top: 10px; }
+            .btn-sub { width: 100% !important; opacity: 1 !important; transform: none !important; }
         }
 
         .btn-sub {
@@ -205,50 +202,31 @@
             transform: translateX(-10px);
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .dropdown:hover .dropdown-content {
-            pointer-events: auto;
-            visibility: visible;
-        }
+        .dropdown:hover .dropdown-content { pointer-events: auto; visibility: visible; }
 
         @media (min-width: 769px) {
-            .dropdown:hover .btn-sub {
-                opacity: 1;
-                transform: translateX(0);
-                animation: floating 3.5s ease-in-out infinite;
-            }
+            .dropdown:hover .btn-sub { opacity: 1; transform: translateX(0); animation: floating 3.5s ease-in-out infinite; }
         }
 
-        .dropdown:hover .btn-sub:nth-child(1) { transition-delay: 0.1s; }
-        .dropdown:hover .btn-sub:nth-child(2) { transition-delay: 0.2s; }
-        .dropdown:hover .btn-sub:nth-child(3) { transition-delay: 0.3s; }
-        .dropdown:hover .btn-sub:nth-child(4) { transition-delay: 0.4s; }
-
         @keyframes floating {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-6px); }
-            100% { transform: translateY(0px); }
         }
 
         .instruction-panel {
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border-radius: 22px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 1.5rem;
             color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .lang-container {
-            display: flex; gap: 10px; margin-bottom: 1rem;
-        }
-
+        .lang-container { display: flex; gap: 10px; margin-bottom: 1rem; }
         .btn-lang { flex: 1; padding: 7px; font-size: 0.75rem; text-transform: uppercase; }
 
         .instruction-content {
@@ -315,7 +293,6 @@
     <script>
         const cursor = document.getElementById('custom-cursor');
         
-        // Solo ejecutar seguimiento de cursor si el dispositivo tiene puntero (PC)
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', e => {
                 cursor.style.left = e.clientX + 'px';
@@ -323,37 +300,33 @@
             });
         }
 
-        function updateCursorListeners() {
-            const links = document.querySelectorAll('a, button');
-            links.forEach(link => {
-                link.addEventListener('mouseenter', () => {
-                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                    cursor.style.background = 'rgba(255, 255, 255, 0.9)';
-                });
-                link.addEventListener('mouseleave', () => {
-                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                    cursor.style.background = 'rgba(255, 255, 255, 0.6)';
-                });
+        // Efectos de hover para el cursor personalizado
+        document.querySelectorAll('a, button').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.background = 'rgba(255, 255, 255, 0.9)';
             });
-        }
-        updateCursorListeners();
+            link.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = 'rgba(255, 255, 255, 0.6)';
+            });
+        });
 
-        // Parallax - Solo en PC para no laguear el móvil
-        const glassPanel = document.querySelector('.glass-panel');
-        const instructPanel = document.querySelector('.instruction-panel');
-
+        // Parallax sutil en PC
         if (window.innerWidth > 768) {
+            const glass = document.querySelector('.glass-panel');
+            const instruct = document.querySelector('.instruction-panel');
             document.addEventListener('mousemove', e => {
                 const xAxis = (window.innerWidth / 2 - e.pageX) / 70;
                 const yAxis = (window.innerHeight / 2 - e.pageY) / 70;
-                glassPanel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                instructPanel.style.transform = `rotateY(${xAxis * 1.1}deg) rotateX(${yAxis * 1.1}deg)`;
+                glass.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                instruct.style.transform = `rotateY(${xAxis * 1.1}deg) rotateX(${yAxis * 1.1}deg)`;
             });
         }
 
         const content = {
-            es: `INSTRUCCIONES:\nComienza solicitando a una IA la creación de un archivo HTML utilizando un prompt.\nLuego, crea un repositorio en GitHub. Dentro, agrega un archivo llamado "index.html" y pega el código.\nGuarda los cambios, ve a Vercel, conecta tu GitHub y despliega el proyecto.`,
-            en: `INSTRUCTIONS:\nStart by asking an AI to create an HTML file using a prompt.\nThen, create a GitHub repository, add "index.html" and paste the code.\nSave changes, go to Vercel, connect your GitHub and deploy.`
+            es: `INSTRUCCIONES:\nComienza solicitando a una IA la creación de un archivo HTML utilizando un prompt.\nLuego, crea un repositorio en GitHub. Agrega "index.html" y pega el código.\nFinalmente, despliega en Vercel.`,
+            en: `INSTRUCTIONS:\nStart by asking an AI to create an HTML file using a prompt.\nCreate a GitHub repo, add "index.html" and paste the code.\nFinally, deploy on Vercel.`
         };
 
         function setLang(lang) {
