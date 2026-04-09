@@ -3,63 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Page Creation</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400&display=swap" rel="stylesheet">
+    <title>Page Creation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div id="custom-cursor"></div>
+    <div id="custom-cursor">
+        <div class="cursor-ring"></div>
+        <div class="cursor-dot"></div>
+    </div>
+    
     <div class="ambient-glow"></div>
+    <div class="particles-container"></div>
 
     <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" 
-                frameborder="0" 
-                allow="autoplay; encrypted-media" 
-                allowfullscreen>
-        </iframe>
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <div class="overlay"></div>
 
     <div class="main-container">
-        
-        <div class="glass-panel">
-            <h1>Page Creation</h1>
-            
-            <nav class="button-list">
-                <div class="dropdown">
-                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
+        <div class="glass-panel" data-tilt>
+            <h1 class="title-gradient">Page Creation</h1>
+            <nav class="button-list" role="navigation">
+                <div class="dropdown" data-dropdown="ia">
+                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn" data-hover="IA Tools">
+                        <span class="btn-icon">🤖</span>
+                        <span class="btn-text">IA</span>
+                    </a>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
-                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
-                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub" data-hover="Gemini AI">Google Gemini</a>
+                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub" data-hover="HackerAI">HackerAI</a>
+                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub" data-hover="Claude AI">ClaudeAI</a>
+                        <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub" data-hover="ChatGPT">ChatGPT</a>
                     </div>
                 </div>
 
-                <div class="dropdown">
-                    <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+                <div class="dropdown" data-dropdown="github">
+                    <a href="https://github.com/" target="_blank" class="btn" data-hover="GitHub Home">
+                        <span class="btn-icon">📂</span>
+                        <span class="btn-text">GitHub</span>
+                    </a>
                     <div class="dropdown-content">
-                        <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
+                        <a href="https://github.com/new" target="_blank" class="btn btn-sub" data-hover="New Repo">Nuevo Repositorio</a>
                     </div>
                 </div>
 
-                <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
-                <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
+                <a href="https://vercel.com/" target="_blank" class="btn" data-hover="Deploy Fast">
+                    <span class="btn-icon">🚀</span>
+                    <span class="btn-text">Vercel</span>
+                </a>
+                <a href="https://www.youtube.com/" target="_blank" class="btn" data-hover="Video Platform">
+                    <span class="btn-icon">📺</span>
+                    <span class="btn-text">YouTube</span>
+                </a>
             </nav>
         </div>
 
-        <div class="instruction-panel">
+        <div class="instruction-panel" data-tilt>
             <div class="lang-container">
-                <button class="btn btn-lang" onclick="setLang('es')">Español</button>
-                <button class="btn btn-lang" onclick="setLang('en')">English</button>
+                <button class="btn btn-lang active" data-lang="es">Español</button>
+                <button class="btn btn-lang" data-lang="en">English</button>
             </div>
             <div id="text-target" class="instruction-content">
-                <p style="opacity: 0.5; text-align: center; font-size: 0.8rem; margin: 0;">Selecciona un idioma / Select language</p>
+                <p class="placeholder-text">Selecciona un idioma para ver el tutorial</p>
             </div>
         </div>
-
     </div>
 
     <script src="script.js"></script>
