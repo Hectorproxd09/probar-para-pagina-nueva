@@ -3,39 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Dashboard</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        /* Mantén aquí tu CSS anterior o llévalo a style.css */
-        /* ... (Tu CSS anterior con las mejoras de responsividad) ... */
+    <title>Creative Creation Dashboard</title>
+    
+    <style>
+        /* 1. CONFIGURACIÓN Y RESET */
+        :root {
+            --primary-glow: rgba(220, 20, 60, 0.25); /* Resplandor carmesí */
+            --glass-bg: rgba(255, 255, 255, 0.03); /* Fondo cristal sutil */
+            --glass-border: rgba(255, 255, 255, 0.1); /* Borde cristal sutil */
+            --text-main: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --transition-fast: all 0.2s ease;
+            --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+        }
+
+        /* 2. ESTRUCTURA BASE Y FONDOS */
+        body {
+            overflow: hidden; /* Evita barras de scroll en PC */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Fondo negro puro */
+            color: var(--text-main);
+        }
+
+        /* Círculo del Cursor (Fantasma estético, JS lo mueve) */
+        #custom-cursor {
+            display: none; /* Oculto por defecto, JS lo muestra en PC */
+            width: 30px;
+            height: 30px;
+            border: 1.5px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none; /* Clave: para que no bloquee los clicks */
+            z-index: 99999;
+            transition: transform 0.15s ease-out, background 0.3s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference; /* Efecto visual genial sobre blanco */
+        }
+
+        /* En PC, ocultamos el puntero real y mostramos el nuestro */
+        @media (pointer: fine) {
+            body { cursor: none; }
+            #custom-cursor { display: block; }
+            a, button, .btn { cursor: none !important; }
+        }
+
+        /* Resplandor Ambiental (JS lo mueve) */
+        .ambient-glow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 10% 10%, var(--primary-glow) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(139, 0, 0, 0.2) 0%, transparent 45%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Video de Fondo (YT) */
+        .video-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            overflow: hidden;
+            filter: brightness(0.5) contrast(1.1); /* Efecto cinemático */
+        }
+
+        .video-background iframe {
+            width: 100vw; height: 56.25vw;
+            min-height: 100vh; min-width: 177.77vh;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Capa Oscura sobre el video */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            z-index: -1;
+        }
+
+        /* 3. CONTENEDORES PRINCIPALES */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 90%;
+            max-width: 420px;
+            align-items: center;
+            perspective: 1500px; /* Importante para el parallax 3D en JS */
+        }
+
+        /* 4. EFECTO CRISTAL (GLASSMORPHISM) */
+        .glass-panel, .instruction-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d; /* Clave para parallax JS */
+        }
+
+        .glass-panel {
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-weight: 200;
+            font-size: 1.6rem;
+            letter-spacing: 7px;
+            margin-bottom: 2.5rem;
+            text-transform: uppercase;
+            color: var(--text-main);
+            background: linear-gradient(to bottom, #fff 0%, #bbb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 5. BOTONES */
+        .button-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .btn {
+            display: block;
+            padding: 16px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            transition: var(--transition-fast);
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto hover moderno */
+        .btn:hover {
+            background: #fff;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 6. DROPDOWNS */
+        .dropdown { position: relative; }
+
+        .dropdown-content {
+            position: absolute;
+            left: 105%;
+            top: 50%;
+            transform: translateY(-50%) translateX(-15px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            visibility: hidden;
+            opacity: 0;
+            transition: var(--transition-smooth);
+            z-index: 10;
+        }
+
+        /* Mostrar Dropdown en Hover (Solo PC) */
+        @media (min-width: 769px) {
+            .dropdown:hover .dropdown-content {
+                visibility: visible;
+                opacity: 1;
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+
+        /* Ajustes Móvil para el Dropdown (JS maneja el click) */
+        @media (max-width: 768px) {
+            body { overflow-y: auto; padding: 20px 0; }
+            .video-background { filter: brightness(0.3); }
+            
+            .dropdown-content {
+                position: static;
+                transform: none !important;
+                display: none; /* JS cambia esto a flex */
+                width: 100%;
+                opacity: 1;
+                visibility: visible;
+                padding-left: 0;
+                margin-top: 10px;
+            }
+            .dropdown.active .dropdown-content { display: flex; }
+            .btn-sub { width: 100% !important; margin-left: 0 !important; }
+        }
+
+        .btn-sub {
+            width: 170px;
+            padding: 12px;
+            font-size: 0.8rem;
+            background: rgba(10, 10, 10, 0.9) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+        }
+
+        .btn-sub:hover {
+            background: #fff !important;
+            color: #000 !important;
+        }
+
+        /* 7. PANEL DE INSTRUCCIONES */
+        .instruction-panel {
+            padding: 1.8rem;
+            text-align: center;
+        }
+
+        .lang-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .btn-lang {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            background: transparent;
+            border-radius: 10px;
+        }
+
+        .btn-lang.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .instruction-content {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            padding: 1.2rem;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            font-weight: 300;
+            min-height: 80px;
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: left;
+            transition: opacity 0.3s ease; /* Para la animación de cambio de JS */
+        }
     </style>
 </head>
-<body class="loading">
+<body>
 
     <div id="custom-cursor"></div>
+
     <div class="ambient-glow" id="ambient-glow"></div>
 
     <div class="video-background">
-        <iframe id="bg-video" src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
 
     <div class="overlay"></div>
 
-    <main class="main-container">
-        <section class="glass-panel" id="main-card">
-            <h1>Page Creation</h1>
+    <main class="main-container" id="parallax-container">
+        
+        <section class="glass-panel" id="main-panel">
+            <h1>Create</h1>
+            
             <nav class="button-list">
                 <div class="dropdown">
-                    <button class="btn dropdown-trigger">IA <span class="arrow">▾</span></button>
+                    <button class="btn dropdown-trigger">IA ▾</button>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app" target="_blank" class="btn btn-sub">Google Gemini</a>
-                        <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
-                        <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
+                        <a href="https://gemini.google.com/" target="_blank" class="btn btn-sub">Google Gemini</a>
                         <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
+                        <a href="https://claude.ai/" target="_blank" class="btn btn-sub">Claude</a>
                     </div>
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn dropdown-trigger">GitHub <span class="arrow">▾</span></button>
+                    <button class="btn dropdown-trigger">GitHub ▾</button>
                     <div class="dropdown-content">
                         <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
                     </div>
@@ -48,11 +314,11 @@
 
         <section class="instruction-panel">
             <div class="lang-container">
-                <button class="btn btn-lang" data-lang="es">Español</button>
-                <button class="btn btn-lang" data-lang="en">English</button>
+                <button class="btn btn-lang btn-sub" data-lang="es">ES</button>
+                <button class="btn btn-lang btn-sub" data-lang="en">EN</button>
             </div>
             <div id="text-target" class="instruction-content">
-                <p class="placeholder-text">Selecciona un idioma para comenzar el tutorial</p>
+                Selecciona un idioma para ver los pasos.
             </div>
         </section>
     </main>
