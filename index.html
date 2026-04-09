@@ -13,14 +13,6 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* En PC ocultamos el cursor del sistema solo en el fondo, 
-           pero lo mantenemos en botones para que sepas qué seleccionas */
-        @media (pointer: fine) {
-            body { cursor: none; }
-            a, button, .btn { cursor: pointer !important; }
-            #custom-cursor { display: block; }
-        }
-
         body {
             min-height: 100vh;
             overflow-x: hidden;
@@ -30,20 +22,33 @@
             align-items: center;
             background-color: #000;
             padding: 20px 0;
+            /* El cursor normal SIEMPRE será visible aquí */
+            cursor: default;
+        }
+
+        /* Enlaces y botones muestran la manita normal */
+        a, button, .btn {
+            cursor: pointer !important;
         }
 
         #custom-cursor {
+            /* Oculto en móviles, visible en PC */
             display: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.6);
+            width: 25px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            transition: transform 0.1s ease, background 0.2s ease;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            pointer-events: none; /* Crucial: para que no bloquee los clicks */
+            z-index: 99999;
+            transition: transform 0.15s ease-out, background 0.3s ease;
             transform: translate(-50%, -50%);
+            backdrop-filter: invert(0.1);
+        }
+
+        @media (pointer: fine) {
+            #custom-cursor { display: block; }
         }
 
         .ambient-glow {
@@ -115,8 +120,8 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: transform 0.1s ease;
             transform-style: preserve-3d;
+            transition: transform 0.1s ease;
         }
 
         h1 {
@@ -126,7 +131,6 @@
             letter-spacing: 5px;
             margin-bottom: 2rem;
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
         .button-list {
@@ -141,27 +145,19 @@
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             font-size: 1rem;
-            font-weight: 400;
-            letter-spacing: 1.5px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.01);
-            position: relative;
-            z-index: 5;
         }
 
         .btn:hover {
             background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            transform: scale(1.03);
             border-color: rgba(255, 255, 255, 0.6);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
         }
 
-        .dropdown {
-            position: relative;
-        }
+        .dropdown { position: relative; }
 
         .dropdown-content {
             position: absolute;
@@ -172,48 +168,37 @@
             flex-direction: column;
             gap: 10px;
             padding-left: 15px;
-            pointer-events: none;
             visibility: hidden;
-            z-index: 10;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
-        /* Móvil */
+        .dropdown:hover .dropdown-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Ajustes Móvil */
         @media (max-width: 768px) {
-            body { align-items: flex-start; }
             .dropdown-content {
                 position: static;
                 transform: none;
-                visibility: visible;
-                pointer-events: auto;
                 max-height: 0;
                 overflow: hidden;
                 padding-left: 0;
-                transition: max-height 0.3s ease;
+                opacity: 1;
             }
-            .dropdown:hover .dropdown-content { max-height: 500px; margin-top: 10px; }
-            .btn-sub { width: 100% !important; opacity: 1 !important; transform: none !important; }
+            .dropdown:hover .dropdown-content { max-height: 300px; margin-top: 10px; }
+            .btn-sub { width: 100% !important; }
         }
 
         .btn-sub {
             width: 170px;
             padding: 10px;
             font-size: 0.85rem;
-            opacity: 0;
-            transform: translateX(-10px);
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .dropdown:hover .dropdown-content { pointer-events: auto; visibility: visible; }
-
-        @media (min-width: 769px) {
-            .dropdown:hover .btn-sub { opacity: 1; transform: translateX(0); animation: floating 3.5s ease-in-out infinite; }
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
         }
 
         .instruction-panel {
@@ -227,17 +212,15 @@
         }
 
         .lang-container { display: flex; gap: 10px; margin-bottom: 1rem; }
-        .btn-lang { flex: 1; padding: 7px; font-size: 0.75rem; text-transform: uppercase; }
+        .btn-lang { flex: 1; padding: 7px; font-size: 0.75rem; }
 
         .instruction-content {
             background: rgba(0, 0, 0, 0.3);
             padding: 1rem;
             border-radius: 14px;
             font-size: 0.85rem;
-            line-height: 1.5;
             max-height: 200px;
             overflow-y: auto;
-            white-space: pre-line;
             text-align: left;
         }
     </style>
@@ -248,7 +231,7 @@
     <div class="ambient-glow"></div>
 
     <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
 
     <div class="overlay"></div>
@@ -293,40 +276,37 @@
     <script>
         const cursor = document.getElementById('custom-cursor');
         
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', e => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-            });
-        }
+        // El círculo sigue al ratón en toda la ventana
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        // Efectos de hover para el cursor personalizado
-        document.querySelectorAll('a, button').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursor.style.background = 'rgba(255, 255, 255, 0.9)';
+        // Efecto visual al pasar sobre botones
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
+                cursor.style.background = 'rgba(255, 255, 255, 0.1)';
             });
-            link.addEventListener('mouseleave', () => {
+            el.addEventListener('mouseleave', () => {
                 cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursor.style.background = 'rgba(255, 255, 255, 0.6)';
+                cursor.style.background = 'rgba(255, 255, 255, 0.3)';
             });
         });
 
-        // Parallax sutil en PC
+        // Parallax sutil (Solo PC)
         if (window.innerWidth > 768) {
             const glass = document.querySelector('.glass-panel');
-            const instruct = document.querySelector('.instruction-panel');
             document.addEventListener('mousemove', e => {
-                const xAxis = (window.innerWidth / 2 - e.pageX) / 70;
-                const yAxis = (window.innerHeight / 2 - e.pageY) / 70;
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 80;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 80;
                 glass.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-                instruct.style.transform = `rotateY(${xAxis * 1.1}deg) rotateX(${yAxis * 1.1}deg)`;
             });
         }
 
         const content = {
-            es: `INSTRUCCIONES:\nComienza solicitando a una IA la creación de un archivo HTML utilizando un prompt.\nLuego, crea un repositorio en GitHub. Agrega "index.html" y pega el código.\nFinalmente, despliega en Vercel.`,
-            en: `INSTRUCTIONS:\nStart by asking an AI to create an HTML file using a prompt.\nCreate a GitHub repo, add "index.html" and paste the code.\nFinally, deploy on Vercel.`
+            es: `INSTRUCCIONES:\n1. Crea el HTML con una IA.\n2. Súbelo a GitHub como "index.html".\n3. Conecta el repo a Vercel y despliega.`,
+            en: `INSTRUCTIONS:\n1. Create HTML via AI.\n2. Upload to GitHub as "index.html".\n3. Connect repo to Vercel and deploy.`
         };
 
         function setLang(lang) {
