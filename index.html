@@ -3,247 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Creation</title>
-    <style>
-        /* Reset de estilos */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            overflow-x: hidden;
-            overflow-y: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #000;
-            padding: 20px 0;
-            /* El cursor normal SIEMPRE será visible aquí */
-            cursor: default;
-        }
-
-        /* Enlaces y botones muestran la manita normal */
-        a, button, .btn {
-            cursor: pointer !important;
-        }
-
-        #custom-cursor {
-            /* Oculto en móviles, visible en PC */
-            display: none;
-            width: 25px;
-            height: 25px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none; /* Crucial: para que no bloquee los clicks */
-            z-index: 99999;
-            transition: transform 0.15s ease-out, background 0.3s ease;
-            transform: translate(-50%, -50%);
-            backdrop-filter: invert(0.1);
-        }
-
-        @media (pointer: fine) {
-            #custom-cursor { display: block; }
-        }
-
-        .ambient-glow {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 10%, rgba(220, 20, 60, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 90%, rgba(139, 0, 0, 0.15) 0%, transparent 40%);
-            z-index: -1;
-            pointer-events: none;
-            animation: glowMove 15s ease infinite alternate;
-        }
-
-        @keyframes glowMove {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.1); opacity: 1; }
-        }
-
-        .video-background {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -2;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .video-background iframe {
-            width: 100vw; height: 56.25vw;
-            min-height: 100vh; min-width: 177.77vh;
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-        }
-
-        .main-container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 90%;
-            max-width: 420px;
-            align-items: center;
-            perspective: 1000px;
-            animation: containerAppear 1s ease-out;
-        }
-
-        @keyframes containerAppear {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .glass-panel {
-            padding: 2.5rem 1.5rem;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease;
-        }
-
-        h1 {
-            color: #fff;
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 5px;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-        }
-
-        .button-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-
-        .btn {
-            display: block;
-            padding: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-            font-size: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 14px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.6);
-            transform: scale(1.02);
-        }
-
-        .dropdown { position: relative; }
-
-        .dropdown-content {
-            position: absolute;
-            left: 105%;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-left: 15px;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .dropdown:hover .dropdown-content {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Ajustes Móvil */
-        @media (max-width: 768px) {
-            .dropdown-content {
-                position: static;
-                transform: none;
-                max-height: 0;
-                overflow: hidden;
-                padding-left: 0;
-                opacity: 1;
-            }
-            .dropdown:hover .dropdown-content { max-height: 300px; margin-top: 10px; }
-            .btn-sub { width: 100% !important; }
-        }
-
-        .btn-sub {
-            width: 170px;
-            padding: 10px;
-            font-size: 0.85rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .instruction-panel {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(15px);
-            border-radius: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.5rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .lang-container { display: flex; gap: 10px; margin-bottom: 1rem; }
-        .btn-lang { flex: 1; padding: 7px; font-size: 0.75rem; }
-
-        .instruction-content {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 1rem;
-            border-radius: 14px;
-            font-size: 0.85rem;
-            max-height: 200px;
-            overflow-y: auto;
-            text-align: left;
-        }
+    <title>Creative Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        /* Mantén aquí tu CSS anterior o llévalo a style.css */
+        /* ... (Tu CSS anterior con las mejoras de responsividad) ... */
     </style>
 </head>
-<body>
+<body class="loading">
 
     <div id="custom-cursor"></div>
-    <div class="ambient-glow"></div>
+    <div class="ambient-glow" id="ambient-glow"></div>
 
     <div class="video-background">
-        <iframe src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1&start=0.3&end=13.7" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+        <iframe id="bg-video" src="https://www.youtube.com/embed/KHrVwCrtZFY?autoplay=1&mute=1&loop=1&playlist=KHrVwCrtZFY&controls=0&showinfo=0&rel=0&modestbranding=1" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
 
     <div class="overlay"></div>
 
-    <div class="main-container">
-        <div class="glass-panel">
+    <main class="main-container">
+        <section class="glass-panel" id="main-card">
             <h1>Page Creation</h1>
             <nav class="button-list">
                 <div class="dropdown">
-                    <a href="https://ai-delta-eosin.vercel.app/" target="_blank" class="btn">IA</a>
+                    <button class="btn dropdown-trigger">IA <span class="arrow">▾</span></button>
                     <div class="dropdown-content">
-                        <a href="https://gemini.google.com/app?hl=es" target="_blank" class="btn btn-sub">Google Gemini</a>
+                        <a href="https://gemini.google.com/app" target="_blank" class="btn btn-sub">Google Gemini</a>
                         <a href="https://hackerai.co/" target="_blank" class="btn btn-sub">HackerAI</a>
                         <a href="https://claude.ai/new" target="_blank" class="btn btn-sub">ClaudeAI</a>
                         <a href="https://chatgpt.com/" target="_blank" class="btn btn-sub">ChatGPT</a>
@@ -251,7 +35,7 @@
                 </div>
 
                 <div class="dropdown">
-                    <a href="https://github.com/" target="_blank" class="btn">GitHub</a>
+                    <button class="btn dropdown-trigger">GitHub <span class="arrow">▾</span></button>
                     <div class="dropdown-content">
                         <a href="https://github.com/new" target="_blank" class="btn btn-sub">Nuevo Repositorio</a>
                     </div>
@@ -260,58 +44,19 @@
                 <a href="https://vercel.com/" target="_blank" class="btn">Vercel</a>
                 <a href="https://www.youtube.com/" target="_blank" class="btn">YouTube</a>
             </nav>
-        </div>
+        </section>
 
-        <div class="instruction-panel">
+        <section class="instruction-panel">
             <div class="lang-container">
-                <button class="btn btn-lang" onclick="setLang('es')">Español</button>
-                <button class="btn btn-lang" onclick="setLang('en')">English</button>
+                <button class="btn btn-lang" data-lang="es">Español</button>
+                <button class="btn btn-lang" data-lang="en">English</button>
             </div>
             <div id="text-target" class="instruction-content">
-                <p style="opacity: 0.5; text-align: center; font-size: 0.8rem;">Select language for tutorial</p>
+                <p class="placeholder-text">Selecciona un idioma para comenzar el tutorial</p>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <script>
-        const cursor = document.getElementById('custom-cursor');
-        
-        // El círculo sigue al ratón en toda la ventana
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // Efecto visual al pasar sobre botones
-        document.querySelectorAll('a, button').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.8)';
-                cursor.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursor.style.background = 'rgba(255, 255, 255, 0.3)';
-            });
-        });
-
-        // Parallax sutil (Solo PC)
-        if (window.innerWidth > 768) {
-            const glass = document.querySelector('.glass-panel');
-            document.addEventListener('mousemove', e => {
-                const xAxis = (window.innerWidth / 2 - e.pageX) / 80;
-                const yAxis = (window.innerHeight / 2 - e.pageY) / 80;
-                glass.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            });
-        }
-
-        const content = {
-            es: `INSTRUCCIONES:\n1. Crea el HTML con una IA.\n2. Súbelo a GitHub como "index.html".\n3. Conecta el repo a Vercel y despliega.`,
-            en: `INSTRUCTIONS:\n1. Create HTML via AI.\n2. Upload to GitHub as "index.html".\n3. Connect repo to Vercel and deploy.`
-        };
-
-        function setLang(lang) {
-            document.getElementById('text-target').innerText = content[lang];
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
